@@ -1,11 +1,58 @@
-import { useValidate, formSubmit } from "../../formvalidations/register";
-
+import { useValidate, RegisterFormData } from "../../formvalidations/register";
+// import { RegisterFormData } from "../../formvalidations/register";
+import 'react-toastify/dist/ReactToastify.css';
+import axios from "axios";
+import { useNavigate } from "react-router-dom";
+import { toast } from "react-toastify";
+// import axios from 'axios';
+// import { useNavigate } from "react-router-dom";
 const Register = () => {
+  const Navigate = useNavigate()
   const { errors, handleSubmit, register } = useValidate();
+  const formSubmit = async(Data: RegisterFormData) => {
+    console.log(Data);
+    
+     {
+      try {
+        const response = await axios.post('http://makeit.com/api/auth/register', {...Data });
+        console.log(response,'reponse');
+        
+             // Handle the response data
+       if(response.data.email){
+        Navigate('/Home')
+       }else{
+        console.log(response.data)
+        toast.error('your already registred please login!', {
+          position: "top-center",
+          autoClose: 5000,
+          hideProgressBar: false,
+          closeOnClick: true,
+          pauseOnHover: true,
+          draggable: true,
+          progress: undefined,
+          theme: "light",
+          });
+       }
+        
+      
+      } catch (error) {
+        console.error(error,'errrorororor'); // Handle the error
+        
+      }
+    }
+    
+      //  write the post method here for sending from data to the server
+    // if(data)console.log("working fine", data);else{
+    //   console.log("not working");
+    // }
+     
+  };
+  
   
   return (
-    <>
-      <div className="flex flex-col items-center justify-center px-6 py-8 mx-auto md:h-screen lg:py-0">
+
+    <section className='bg-gradient-to-br from-blue-300 to-white'>
+    <div className="flex flex-col items-center justify-center px-6 py-8 mx-auto md:h-screen lg:py-0">
         <a
           href="#"
           className="flex items-center mb-6 text-2xl font-bold text-gray-900 dark:text-black"
@@ -137,7 +184,7 @@ const Register = () => {
                   </label>
                 )}
                 <input
-                  type="confirmPassword"
+                  type="confirmPassword" 
                   id="confirmPassword"
                   placeholder="••••••••"
                   {...register("confirmPassword")}
@@ -156,7 +203,7 @@ const Register = () => {
                       id="remember"
                       aria-describedby="remember"
                       type="checkbox"
-                      className="w-4 h-4 shadow-md rounded bg-gray-50 focus:ring-3 focus:ring-primary-300 dark:bg-gray-700border dark:focus:ring-primary-600 dark:ring-offset-gray-800"
+                      className="w-4 h-4 shadow-xl rounded bg-gray-50 focus:ring-3 focus:ring-primary-300 dark:bg-gray-700border dark:focus:ring-primary-600 dark:ring-offset-gray-800"
                     />
                   </div>
                   <div className="ml-3 text-sm">
@@ -177,7 +224,7 @@ const Register = () => {
                 Don’t have an account yet?{" "}
                 <a
                   href="#"
-                  className="font-medium  pl-5  text-blue-800 hover:underline dark:text-primary-500"
+                  className="font-medium hover:underline  pl-5  text-blue-800  dark:text-primary-500"
                 >
                   Sign in
                 </a>
@@ -186,7 +233,8 @@ const Register = () => {
           </div>
         </div>
       </div>
-    </>
+    </section>
+      
   );
 };
 
