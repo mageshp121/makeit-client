@@ -9,6 +9,7 @@ import { toast } from "react-toastify";
 const Register = () => {
   const Navigate = useNavigate()
   const { errors, handleSubmit, register } = useValidate();
+
   const formSubmit = async(Data: RegisterFormData) => {
     console.log(Data);
     
@@ -208,13 +209,67 @@ const Register = () => {
                   </div>
                   <div className="ml-3 text-sm">
                     <label
-                      htmlFor="remember"
-                      className="text-gray-500 dark:text-black"
+                      htmlFor="email"
+                      className="block mb-2 text-sm font-light text-gray-900 dark:text-black"
                     >
-                      Remember me
+                      password
                     </label>
+                  )}
+                  <input
+                    type="password"
+                    id="password"
+                    className="bg-gray-50 shadow-md text-gray-900 sm:text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 border dark:placeholder-gray-400 dark:text-black dark:focus:ring-blue-500 dark:focus:border-blue-500"
+                    placeholder="••••••••"
+                    {...register("password")}
+                  />
+                </div>
+                <div>
+                  {errors.confirmPassword ? (
+                    <span className="text-red-600">
+                      {errors.confirmPassword.message}
+                    </span>
+                  ) : (
+                    <label
+                      htmlFor="email"
+                      className="block mb-2 text-sm font-light text-gray-900 dark:text-black"
+                    >
+                      confirm password
+                    </label>
+                  )}
+                  <input
+                    type="confirmPassword"
+                    id="confirmPassword"
+                    placeholder="••••••••"
+                    {...register("confirmPassword")}
+                    className="bg-gray-50 shadow-md text-gray-900 sm:text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 border dark:placeholder-gray-400 dark:text-black dark:focus:ring-blue-500 dark:focus:border-blue-500"
+                  />
+                  {errors.confirmPassword && (
+                    <span className="text-red-600">
+                      {errors.confirmPassword.message}
+                    </span>
+                  )}
+                </div>
+                <div className="flex items-center justify-between">
+                  <div className="flex items-start">
+                    <div className="flex items-center h-5">
+                      <input
+                        id="remember"
+                        aria-describedby="remember"
+                        type="checkbox"
+                        className="w-4 h-4 shadow-md rounded bg-gray-50 focus:ring-3 focus:ring-primary-300 dark:bg-gray-700border dark:focus:ring-primary-600 dark:ring-offset-gray-800"
+                      />
+                    </div>
+                    <div className="ml-3 text-sm">
+                      <label
+                        htmlFor="remember"
+                        className="text-gray-500 dark:text-black"
+                      >
+                        Remember me
+                      </label>
+                    </div>
                   </div>
                 </div>
+
               </div>
               <input
                 type="submit"
