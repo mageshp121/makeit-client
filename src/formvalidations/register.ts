@@ -1,6 +1,10 @@
 import { z, ZodType } from "zod";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
+import axios from 'axios';
+
+
+
 // Register form schama
 export type RegisterFormData = {
   firstName: string;
@@ -11,7 +15,7 @@ export type RegisterFormData = {
   confirmPassword: string;
 };
 
-//  Zod validation
+//  Zod validation  
 export const schama: ZodType<RegisterFormData> = z
   .object({
     firstName: z
@@ -34,7 +38,7 @@ export const schama: ZodType<RegisterFormData> = z
       message: "Please provide a valid email address",
     }),
     phone: z.string().refine((value) => value.length === 10, {
-      message: "Mobile number must have exactly 10 characters",
+      message: "Mobile number must have exactly 10 numbers",
     }),
     password: z
       .string()
@@ -69,8 +73,27 @@ export const useValidate = () => {
     errors,
   };
 };
-export const formSubmit = (data: RegisterFormData) => {
-  //  write the post method here for sending from data to the server
-  console.log("working fine", data);
-};
+
+// export const formSubmit = async(Data: RegisterFormData) => {
+//   console.log(Data);
+  
+//    {
+//     try {
+//       const response = await axios.post('http://makeit.com/api/auth/register', {...Data });
+//            // Handle the response data
+
+//       console.log(response.data)
+    
+//     } catch (error) {
+//       console.error(error,'errrorororor'); // Handle the error
+      
+//     }
+//   }
+  
+//     //  write the post method here for sending from data to the server
+//   // if(data)console.log("working fine", data);else{
+//   //   console.log("not working");
+//   // }
+   
+// };
 

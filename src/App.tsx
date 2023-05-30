@@ -1,13 +1,15 @@
-
+import Home from './pages/Home/Home'
 import Register from './pages/Register/register'
+import { Routes, Route } from 'react-router-dom'
 
 function App() {
   return (
     <>
-    <section className='bg-gradient-to-br from-blue-300 to-white'>
-    <Register/>
-    </section>
      
+        <Routes>
+          <Route path='/' element={<Register />} />
+          <Route path='/Home' element={<Home />} />
+        </Routes>
     </>
   )
 }
