@@ -1,4 +1,6 @@
 import { useValidate, formSubmit} from "../../formvalidations/login";
+import LoginButton from "../../sections/auth0/authLogin";
+import LogoutButton from "../../sections/auth0/authLogout";
 
 function Login() {
   const { errors, handleSubmit, register } = useValidate();
@@ -109,6 +111,7 @@ function Login() {
                   </a>
                 </p>
               </form>
+              <LoginButton/>
             </div>
           </div>
         </div>
