@@ -1,59 +1,40 @@
 import { useValidate, RegisterFormData } from "../../formvalidations/register";
-// import { RegisterFormData } from "../../formvalidations/register";
-import 'react-toastify/dist/ReactToastify.css';
-import axios from "axios";
+import "react-toastify/dist/ReactToastify.css";
 import { useNavigate } from "react-router-dom";
-import { toast } from "react-toastify";
-// import axios from 'axios';
-// import { useNavigate } from "react-router-dom";
-const Register = () => {
-  const Navigate = useNavigate()
-  const { errors, handleSubmit, register } = useValidate();
+import { RegisterFn } from "../../api/methods/post";
 
-  const formSubmit = async(Data: RegisterFormData) => {
-    console.log(Data);
-    
-     {
+
+
+// custom hook
+import { UseSomthingWentWrong, userExistToast } from "../../toastify/toasty";
+import { useEffect } from "react";
+
+// Register Component
+const Register = () => {
+  useEffect(()=>{
+    // dotenv.config()
+  },[])
+  const Navigate = useNavigate();
+  const { errors, handleSubmit, register } = useValidate();
+  const formSubmit = async (Data: RegisterFormData) => {
+    {
       try {
-        const response = await axios.post('http://makeit.com/api/auth/register', {...Data });
-        console.log(response,'reponse');
-        
-             // Handle the response data
-       if(response.data.email){
-        Navigate('/Home')
-       }else{
-        console.log(response.data)
-        toast.error('your already registred please login!', {
-          position: "top-center",
-          autoClose: 5000,
-          hideProgressBar: false,
-          closeOnClick: true,
-          pauseOnHover: true,
-          draggable: true,
-          progress: undefined,
-          theme: "light",
-          });
-       }
-        
-      
+        const response: any = await RegisterFn({ ...Data }); // This is the post methode
+        if (response.data.email) {
+          Navigate("/Otp"); // Navigating to a page for otp verifiation
+        } else if (response.data.UserExist) {
+          userExistToast();
+        } else if (response.error) {
+          UseSomthingWentWrong();
+        }
       } catch (error) {
-        console.error(error,'errrorororor'); // Handle the error
-        
+        UseSomthingWentWrong();
       }
     }
-    
-      //  write the post method here for sending from data to the server
-    // if(data)console.log("working fine", data);else{
-    //   console.log("not working");
-    // }
-     
   };
-  
-  
   return (
-
-    <section className='bg-gradient-to-br from-blue-300 to-white'>
-    <div className="flex flex-col items-center justify-center px-6 py-8 mx-auto md:h-screen lg:py-0">
+    <section className="bg-gradient-to-br from-blue-300 to-white">
+      <div className="flex flex-col items-center justify-center px-6 py-8 mx-auto md:h-screen lg:py-0">
         <a
           href="#"
           className="flex items-center mb-6 text-2xl font-bold text-gray-900 dark:text-black"
@@ -185,91 +166,12 @@ const Register = () => {
                   </label>
                 )}
                 <input
-                  type="confirmPassword" 
+                  type="confirmPassword"
                   id="confirmPassword"
                   placeholder="••••••••"
                   {...register("confirmPassword")}
-                  className="bg-gray-50 shadow-md text-gray-900 sm:text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 border dark:placeholder-gray-400 dark:text-black dark:focus:ring-blue-500 dark:focus:border-blue-500"
+                  className="bg-gray-50 shadow-md mb-5 text-gray-900 sm:text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 border dark:placeholder-gray-400 dark:text-black dark:focus:ring-blue-500 dark:focus:border-blue-500"
                 />
-                {errors.confirmPassword && (
-                  <span className="text-red-600">
-                    {errors.confirmPassword.message}
-                  </span>
-                )}
-              </div>
-              <div className="flex items-center justify-between">
-                <div className="flex items-start">
-                  <div className="flex items-center h-5">
-                    <input
-                      id="remember"
-                      aria-describedby="remember"
-                      type="checkbox"
-                      className="w-4 h-4 shadow-xl rounded bg-gray-50 focus:ring-3 focus:ring-primary-300 dark:bg-gray-700border dark:focus:ring-primary-600 dark:ring-offset-gray-800"
-                    />
-                  </div>
-                  <div className="ml-3 text-sm">
-                    <label
-                      htmlFor="email"
-                      className="block mb-2 text-sm font-light text-gray-900 dark:text-black"
-                    >
-                      password
-                    </label>
-                  )}
-                  <input
-                    type="password"
-                    id="password"
-                    className="bg-gray-50 shadow-md text-gray-900 sm:text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 border dark:placeholder-gray-400 dark:text-black dark:focus:ring-blue-500 dark:focus:border-blue-500"
-                    placeholder="••••••••"
-                    {...register("password")}
-                  />
-                </div>
-                <div>
-                  {errors.confirmPassword ? (
-                    <span className="text-red-600">
-                      {errors.confirmPassword.message}
-                    </span>
-                  ) : (
-                    <label
-                      htmlFor="email"
-                      className="block mb-2 text-sm font-light text-gray-900 dark:text-black"
-                    >
-                      confirm password
-                    </label>
-                  )}
-                  <input
-                    type="confirmPassword"
-                    id="confirmPassword"
-                    placeholder="••••••••"
-                    {...register("confirmPassword")}
-                    className="bg-gray-50 shadow-md text-gray-900 sm:text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 border dark:placeholder-gray-400 dark:text-black dark:focus:ring-blue-500 dark:focus:border-blue-500"
-                  />
-                  {errors.confirmPassword && (
-                    <span className="text-red-600">
-                      {errors.confirmPassword.message}
-                    </span>
-                  )}
-                </div>
-                <div className="flex items-center justify-between">
-                  <div className="flex items-start">
-                    <div className="flex items-center h-5">
-                      <input
-                        id="remember"
-                        aria-describedby="remember"
-                        type="checkbox"
-                        className="w-4 h-4 shadow-md rounded bg-gray-50 focus:ring-3 focus:ring-primary-300 dark:bg-gray-700border dark:focus:ring-primary-600 dark:ring-offset-gray-800"
-                      />
-                    </div>
-                    <div className="ml-3 text-sm">
-                      <label
-                        htmlFor="remember"
-                        className="text-gray-500 dark:text-black"
-                      >
-                        Remember me
-                      </label>
-                    </div>
-                  </div>
-                </div>
-
               </div>
               <input
                 type="submit"
@@ -289,7 +191,6 @@ const Register = () => {
         </div>
       </div>
     </section>
-      
   );
 };
 
