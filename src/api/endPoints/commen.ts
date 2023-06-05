@@ -1,0 +1,1 @@
+export const Register_Api:string = "api/auth/register"
