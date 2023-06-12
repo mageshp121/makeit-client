@@ -8,6 +8,7 @@ import { RegisterFn } from "../../api/methods/post";
 // custom hook
 import { UseSomthingWentWrong, userExistToast } from "../../toastify/toasty";
 import { useEffect } from "react";
+import GoogleSignup from "../../sections/google/GoogleSignup";
 
 // Register Component
 const Register = () => {
@@ -185,6 +186,7 @@ const Register = () => {
                 >
                   Sign in
                 </a>
+                <GoogleSignup/>
               </p>
             </form>
           </div>
