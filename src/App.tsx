@@ -12,6 +12,7 @@ import LeftPage from './pages/LeftSideBar/Leftpage'
 import Post from './pages/Post/Post'
 import Jobs from './pages/RightSideBar/Job'
 import Course from './pages/RightSideBar/Course'
+import ViewPost from './pages/Post/ViewPost'
 
 
 function App() {
@@ -20,16 +21,15 @@ function App() {
      <div className='h-screen  bg-slate-500 bg-gradient-to-br from-blue-300 to-white'>
       <div className='pt-6'>
       <NavBar/>
+      {/* <Register /> */}
+      {/* <Post/> */}
       <div className='flex flex-row'>
-        <LeftPage/>
-        <Post/>
-        <Jobs/>
-        <Course/>
       </div>
       <div>
       </div>
       </div>
      <Routes>
+     <Route path='/viewpost' element={<ViewPost /> } />
           {/* <Route path='/' element={<Register /> } />
           <Route path='/invitation' element={<InvitationBar /> } />
           <Route path='/side' element={<Sidebar /> } />

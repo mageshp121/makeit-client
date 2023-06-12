@@ -1,10 +1,12 @@
 import { GoogleAuthProvider, getAuth, signInWithPopup } from "firebase/auth";
 import { app } from "../../config/firebase";
+import { useNavigate } from "react-router-dom";
 // For Firebase JS SDK v7.20.0 and later, measurementId is optional
 
 function GoogleSignup() {
   const provider = new GoogleAuthProvider();
   const auth = getAuth(app);
+  const navigate= useNavigate()
   function doSignup() {
     signInWithPopup(auth, provider)
       .then((result) => {
@@ -16,6 +18,7 @@ function GoogleSignup() {
         // The signed-in user info.
         const user = result.user;
         console.log(user);
+        navigate('/details')
         // IdP data available using getAdditionalUserInfo(result)
         // ...
       })
