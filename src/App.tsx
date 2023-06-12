@@ -10,8 +10,6 @@ import Sidebar from './components/sideDashBoard'
 import UserName from './components/userName'
 import LeftPage from './pages/LeftSideBar/Leftpage'
 import Post from './pages/Post/Post'
-import Jobs from './pages/RightSideBar/Job'
-import Course from './pages/RightSideBar/Course'
 import ViewPost from './pages/Post/ViewPost'
 
 
