@@ -1,5 +1,5 @@
-// import { initializeApp } from "firebase/app";
-// import { getAuth } from "firebase/auth";
+
+import { getAuth } from "firebase/auth";
 
 // const firebaseConfig = {
 //   apiKey:,
@@ -23,14 +23,15 @@ import { initializeApp } from "firebase/app";
 
 
 const firebaseConfig = {
-  apiKey: "AIzaSyA_TKwU3a-w8b_W5xrIt8Ny7kBk8E0qhzw",
-  authDomain: "verify-ed45b.firebaseapp.com",
-  projectId: "verify-ed45b",
-  storageBucket: "verify-ed45b.appspot.com",
-  messagingSenderId: "795111024140",
-  appId: "1:795111024140:web:56878dce198d3413e4f029",
-  measurementId: "G-NVQT2XG2X0"
+  apiKey: "AIzaSyAudBDTaYPZYSpU7MhLS6ilEhv1qK4ot-Q",
+  authDomain: "makeit-client.firebaseapp.com",
+  projectId: "makeit-client",
+  storageBucket: "makeit-client.appspot.com",
+  messagingSenderId: "905352299094",
+  appId: "1:905352299094:web:0cd1e2b55aedfaefc6f1f7",
+  measurementId: "G-ZQ82JB89V4"
 };
 
 
 export const app = initializeApp(firebaseConfig);
+export const authentication = getAuth(app)

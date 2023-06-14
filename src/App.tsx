@@ -1,44 +1,30 @@
-import Home from './pages/Home/Home'
-import Login from './pages/Login/login'
-import Otp from './pages/Otp/otp'
-import Register from './pages/Register/register'
-import { Routes, Route } from 'react-router-dom'
-import './config/firebase';
-import NavBar from './components/navBar'
-import InvitationBar from './components/InvitationBar'
-import Sidebar from './components/sideDashBoard'
-import UserName from './components/userName'
-import LeftPage from './pages/LeftSideBar/Leftpage'
-import Post from './pages/Post/Post'
-import ViewPost from './pages/Post/ViewPost'
-
+import { Route, Routes,Navigate } from "react-router-dom";
+import Login from "./pages/Login/login";
+import Register from "./pages/Register/register";
+import Otp from "./pages/Otp/otp";
+import Eor from "./pages/Error/Eor";
+import { MainLayout } from "./Routes/MainLayOut";
+import { ProtectedRoute } from "./Routes/ProtectedRoute";
+import UserRouter from "./Routes/UserRouter";
+import UserProfiile from "./pages/UserProfile/UserProfile";
+import Course from "./pages/Cours/Course";
 
 function App() {
+ 
+  
+  
   return (
-
-     <div className='h-screen  bg-slate-500 bg-gradient-to-br from-blue-300 to-white'>
-      <div className='pt-6'>
-      <NavBar/>
-      {/* <Register /> */}
-      {/* <Post/> */}
-      <div className='flex flex-row'>
-      </div>
-      <div>
-      </div>
-      </div>
-     <Routes>
-     <Route path='/viewpost' element={<ViewPost /> } />
-          {/* <Route path='/' element={<Register /> } />
-          <Route path='/invitation' element={<InvitationBar /> } />
-          <Route path='/side' element={<Sidebar /> } />
-          <Route path='/user' element={<UserName /> } /> */}
-          {/* <Route path='/Home' element={<Home />} />          
-          <Route path='/Otp' element={<Otp /> } /> 
-          <Route path='/login' element={<Login /> } />  */}
-        </Routes>
-     </div>
-        
-  )
+    <Routes>
+      <Route path="/login" element={<Login />} />
+      <Route path="/register" element={<Register />} />
+      <Route path="/otp" element={<Otp />} />
+      <Route path="/*" element={<ProtectedRoute path="/*" element={<MainLayout><UserRouter/></MainLayout>} />}/>
+      <Route path="/Profile" element={<ProtectedRoute path="/" element={<MainLayout><UserProfiile/></MainLayout>} />}/>
+      <Route path="/Course" element={<ProtectedRoute path="/" element={<MainLayout><Course/></MainLayout>} />}/>
+      
+      <Route path="*" element={<Eor />} />
+    </Routes>
+  ); 
 }
 
-export default App
+export default App;
