@@ -1,8 +1,9 @@
 import React from "react";
+import { Link } from "react-router-dom";
 
 function Sidebar() {
   return (
-    <div className="flex w-64 cursor-pointer pt-2 pl-6 ">
+    <div className="flex w-64 mb-4 cursor-pointer pt-2  ">
       <div className=" shadow-lg  justify-between rounded-xl border-e bg-white">
         <nav
           aria-label="Main Nav"
@@ -30,24 +31,24 @@ function Sidebar() {
           </a>
           
 
-          <a
-            href="#"
-            className="flex items-center gap-2 hover:scale-105 transition-transform duration-300 rounded-lg px-4 py-2 text-gray-500 hover:bg-gray-100 hover:text-indigo-500"
-          >
-            <svg
-              xmlns="http://www.w3.org/2000/svg"
-              className="h-5 w-5 opacity-75"
-              viewBox="0 0 20 20"
-              fill="currentColor"
-            >
-              <path
-                fillRule="evenodd"
-                d="M10 2a6 6 0 110 12 6 6 0 010-12zm0 2a4 4 0 100 8 4 4 0 000-8zm0 2a2 2 0 110 4 2 2 0 010-4z"
-                clipRule="evenodd"
-              />
-            </svg>
-            <span className="text-sm font-medium">Profile</span>
-          </a>
+          <Link
+  to="/Profile"
+  className="flex items-center gap-2 hover:scale-105 transition-transform duration-300 rounded-lg px-4 py-2 text-gray-500 hover:bg-gray-100 hover:text-indigo-500"
+>
+  <svg
+    xmlns="http://www.w3.org/2000/svg"
+    className="h-5 w-5 opacity-75"
+    viewBox="0 0 20 20"
+    fill="currentColor"
+  >
+    <path
+      fillRule="evenodd"
+      d="M10 2a6 6 0 110 12 6 6 0 010-12zm0 2a4 4 0 100 8 4 4 0 000-8zm0 2a2 2 0 110 4 2 2 0 010-4z"
+      clipRule="evenodd"
+    />
+  </svg>
+  <span className="text-sm font-medium">Profile</span>
+</Link>
           <a
             href="#"
             className="flex items-center gap-2 hover:scale-105 transition-transform duration-300 rounded-lg px-4 py-2 text-gray-500 hover:bg-gray-100 hover:text-indigo-500"

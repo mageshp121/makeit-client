@@ -1,6 +1,9 @@
+import { Navigate, useNavigate } from "react-router-dom";
+
 function UserName() {
+  const navigate = useNavigate()
   return (
-    <div className="w-72 cols-4 ml-6 mt-4  shadow-xl overflow-hidden hover:scale-105 transition-transform duration-300">
+    <div className="w-72 cols-4  mt-4  shadow-xl overflow-hidden hover:scale-105 transition-transform duration-300" onClick={()=>navigate('/profile')}>
       <div className="flex items-start p-4 rounded-xl shadow-lg bg-white">
         <div className="flex items-center rounded-3xl overflow-hidden justify-center bg-indigo-50 h-12 w-12  border border-indigo-100">
           <img src="src/images/Max-R_Headshot (1).jpg" alt="" />

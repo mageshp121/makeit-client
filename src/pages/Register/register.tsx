@@ -7,14 +7,18 @@ import { RegisterFn } from "../../api/methods/post";
 
 // custom hook
 import { UseSomthingWentWrong, userExistToast } from "../../toastify/toasty";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import GoogleSignup from "../../sections/google/GoogleSignup";
 
 // Register Component
 const Register = () => {
-  useEffect(()=>{
-    // dotenv.config()
-  },[])
+  // const [vari,setVari] = useState(true)
+  // useEffect(()=>{
+  //        var fn=()=>{
+  //        if(vari)return UseSomthingWentWrong()
+  //        }
+  //        fn()
+  // },[])
   const Navigate = useNavigate();
   const { errors, handleSubmit, register } = useValidate();
   const formSubmit = async (Data: RegisterFormData) => {
@@ -178,7 +182,7 @@ const Register = () => {
                 type="submit"
                 className="w-full shadow-lg  text-white bg-indigo-600 hover:bg-primary-700 focus:ring-4  focus:outline-none focus:ring-primary-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-primary-600 dark:hover:bg-primary-700 dark:focus:ring-primary-800"
               />
-              <p className="text-sm  text-center font-light text-black dark:text-black">
+              {/* <p className="text-sm  text-center font-light text-black dark:text-black">
                 Don’t have an account yet?{" "}
                 <a
                   href="#"
@@ -187,7 +191,7 @@ const Register = () => {
                   Sign in
                 </a>
                 <GoogleSignup/>
-              </p>
+              </p> */}
             </form>
           </div>
         </div>

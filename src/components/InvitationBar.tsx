@@ -6,7 +6,7 @@ function InvitationBar() {
     for (let i = 0; i <100; i++) {
       invitations.push(
         <div
-          className="w-72 cols-4 ml-6 overflow-hidden   flex-shrink-0 "
+          className="w-72 cols-4  overflow-hidden   flex-shrink-0 "
           key={i}
         >
           <div className="flex items-start p-4 rounded-xl  bg-white ">
@@ -34,7 +34,7 @@ function InvitationBar() {
   };
   return (
    
-    <div className="flex w-80 h-56 flex-col rounded-lg gap-2 overflow-x-auto">
+    <div className="flex w-80 h-80 flex-col rounded-lg gap-2 overflow-x-auto">
       {generateInvitations()}
     </div>
   );

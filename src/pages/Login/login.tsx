@@ -1,6 +1,8 @@
+
 import { useValidate, formSubmit} from "../../formvalidations/login";
 import LoginButton from "../../sections/auth0/authLogin";
 import LogoutButton from "../../sections/auth0/authLogout";
+import { NavLink } from "react-router-dom";
 
 function Login() {
   const { errors, handleSubmit, register } = useValidate();
@@ -103,12 +105,7 @@ function Login() {
                 />
                 <p className="text-sm  text-center font-light text-black dark:text-black">
                   Don’t have an account yet?{" "}
-                  <a
-                    href="#"
-                    className="font-medium  pl-5  text-blue-800 hover:underline dark:text-primary-500"
-                  >
-                    Register
-                  </a>
+                  <NavLink to={'/register'}>Register</NavLink>
                 </p>
               </form>
               <LoginButton/>

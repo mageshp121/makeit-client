@@ -1,28 +1,22 @@
 import { useForm } from "react-hook-form";
 import { DevTool } from "@hookform/devtools";
-import { Otpfomevalue } from "../../formvalidations/types/types";
+import { Otpfomevalue } from "../../types/types";
 import { useEffect, useState, useRef } from "react";
 import { authentication } from "../../config/firebase";
-import { RecaptchaVerifier, signInWithPhoneNumber } from "firebase/auth";
-declare global {
-  interface Window {
-    recaptchaVerifier?: RecaptchaVerifier;
-    confirmationResult?: any;
-  }
-}
-// custom hook
-import { useConvertString } from "../../customHooks/hook";
-// toastify hook
-import { useOtpSubmit } from "../../toastify/toasty";
+import { RecaptchaVerifier } from "firebase/auth";
+import { useSendOtp, useVerifyOtp } from "../../customHooks/hook";
+import { UseSomthingWentWrong, useOtpSubmit } from "../../toastify/toasty";
 import { useNavigate } from "react-router-dom";
-
 
 const Otp = () => {
   const [count, setCount] = useState(1);
+  const [minutes, setMinutes] = useState(1);
+  const [seconds, setSeconds] = useState(30);
+  const [otpControler, setOtpControler] = useState(false);
   const Navigate = useNavigate();
+  const isMountedRef = useRef(false);
   const phoneNumber = "+918590628664";
   const { register, control, handleSubmit } = useForm<Otpfomevalue>();
-  const isMountedRef = useRef(false);
 
   const generateRecaptcha = () => {
     window.recaptchaVerifier = new RecaptchaVerifier(
@@ -34,49 +28,69 @@ const Otp = () => {
     );
   };
 
+  const resendOTP = () => {
+    isMountedRef.current = false;
+    setOtpControler(true);
+    setMinutes(1);
+    setSeconds(30);
+  };
+
+  // This useEffect will create re-captcha only the initial render
+  useEffect(() => {
+    console.log("recatptcha verifier useEffect");
+    generateRecaptcha();
+  }, []);
+
+  // This useEffect is sendinng the otp 
   useEffect(() => {
     if (!isMountedRef.current) {
       console.log("useEffect calling ");
-      generateRecaptcha();
       if (window.recaptchaVerifier) {
         let appVerifier = window.recaptchaVerifier;
-        signInWithPhoneNumber(authentication, phoneNumber, appVerifier)
-          .then((confirmationResult) => {
-            window.confirmationResult = confirmationResult;
-          })
-          .catch((error) => {
-            useOtpSubmit("sorry too many attempts please try after some times");
-            console.log(error);
-          });
+        useSendOtp(authentication, phoneNumber, appVerifier);
       }
       isMountedRef.current = true;
     }
-  }, []);
-  const fromSubit = (data: Otpfomevalue) => {
-    setCount(count + 1);
-    if (count <= 3) {
-      let otp = useConvertString(data);
-      if (otp.length === 6) {
-        console.log(otp, "otp");
-        let confirmationResult = window.confirmationResult;
-        confirmationResult
-          .confirm(otp)
-          .then((result: any) => {
-            const user = result.user;
-            console.log(user);
-            Navigate("/Home");
-          })
-          .catch((error: any) => {
-            console.log(error);
-            useOtpSubmit("invalied otp");
-          });
+  }, [otpControler, isMountedRef.current, resendOTP]);
+
+  // This useEffect is sets the timer for resend otp
+  useEffect(() => {
+    const interval = setInterval(() => {
+      if (seconds > 0) {
+        setSeconds(seconds - 1);
       }
+      if (seconds === 0) {
+        if (minutes === 0) {
+          clearInterval(interval);
+        } else {
+          setSeconds(59);
+          setMinutes(minutes - 1);
+        }
+      }
+    }, 1000);
+
+    return () => {
+      clearInterval(interval);
+    };
+  }, [seconds]);
+
+  // confirming that the user provided otp is curret or not
+  const fromSubit = async (data: Otpfomevalue) => {
+    setCount(count + 1);
+    if (count <= 2) {
+      await useVerifyOtp(data)
+        .then((response) => {
+          console.log(response, "response");
+          if (response.sucess) Navigate("/");
+        })
+        .catch((err) => {
+          console.log("err cathced ", err);
+          UseSomthingWentWrong();
+        });
     } else {
       useOtpSubmit("otp already submited please wait a second");
     }
   };
-
-  // captch verify
 
   return (
     <>
@@ -234,6 +248,26 @@ const Otp = () => {
                   type="submit"
                   className="w-full shadow-lg  text-white bg-indigo-600 hover:bg-primary-700 focus:ring-4  focus:outline-none focus:ring-primary-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-primary-600 dark:hover:bg-primary-700 dark:focus:ring-primary-800"
                 />
+                <div className="countdown-text">
+                  {seconds > 0 || minutes > 0 ? (
+                    <p>
+                      Time Remaining: {minutes < 10 ? `0${minutes}` : minutes}:
+                      {seconds < 10 ? `0${seconds}` : seconds}
+                    </p>
+                  ) : (
+                    <p>Didn't recieve code?</p>
+                  )}
+
+                  <button
+                    disabled={seconds > 0 || minutes > 0}
+                    style={{
+                      color: seconds > 0 || minutes > 0 ? "#DFE3E8" : "#FF5630",
+                    }}
+                    onClick={resendOTP}
+                  >
+                    Resend OTP
+                  </button>
+                </div>
               </form>
               <DevTool control={control} />
               <div id="recaptcha-container"></div>

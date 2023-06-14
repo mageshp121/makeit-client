@@ -1,3 +1,5 @@
+import { Link } from "react-router-dom";
+
 const NavBar = () => {
     return (
           <nav className="bg-white ml-6 mr-6 rounded-xl border-gray-200 dark:bg-white">
@@ -125,11 +127,14 @@ const NavBar = () => {
                     </a>
                   </li>
                   <li>
-                    <a
+                    {/* <a
                       href="#"
                       className="block py-2 pl-3 pr-4 text-gray-900 rounded hover:bg-black-100 md:hover:bg-black md:hover:text-black md:p-0 dark:text-black md:dark:hover:text-indigo-500 dark:hover:bg-gray-700 dark:hover:text-black md:dark:hover:bg-transparent dark:border-gray-700"                  >
                       COURSES
-                    </a>
+                    </a> */}
+                    <Link to='/Course'className="block py-2 pl-3 pr-4 text-gray-900 rounded hover:bg-black-100 md:hover:bg-black md:hover:text-black md:p-0 dark:text-black md:dark:hover:text-indigo-500 dark:hover:bg-gray-700 dark:hover:text-black md:dark:hover:bg-transparent dark:border-gray-700" >
+                    COURSES
+                    </Link>
                   </li>
                 </ul>
                 {/* <div className="bg-blue-400 w-28 h-2">
