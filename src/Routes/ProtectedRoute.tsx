@@ -1,6 +1,6 @@
 import Home from "../pages/Home/Home";
 import Post from "../pages/Post/Post";
-import { MainLayout } from "./MainLayOut";
+import { MainLayout } from "../components/sections/MainLayOut";
 import { Route, Routes,Navigate } from "react-router-dom";
 import { useState } from "react";
 
@@ -12,5 +12,5 @@ export const ProtectedRoute= ({ path, element } : { path: string, element: JSX.E
   if (!currentUser) {
     return <Navigate to="/login" />;
   }
-  return <Routes><Route path={path} element={element} /></Routes> ;
+  return <Routes><Route path={path} element={element} /></Routes>;
 };

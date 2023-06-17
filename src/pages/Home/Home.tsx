@@ -4,7 +4,6 @@ import { toast } from "react-toastify"
  const Home =()=>{
     useEffect(()=>{
         console.log('calling......?');
-        
         toast.success('Welcome to makeit 🚀', {
           position: "top-right",
           autoClose: 5000,

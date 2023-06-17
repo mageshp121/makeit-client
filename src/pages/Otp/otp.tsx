@@ -1,12 +1,12 @@
 import { useForm } from "react-hook-form";
 import { DevTool } from "@hookform/devtools";
-import { Otpfomevalue } from "../../types/types";
+import { Otpfomevalue } from "../../utils/types/types";
 import { useEffect, useState, useRef } from "react";
-import { authentication } from "../../config/firebase";
-import { RecaptchaVerifier } from "firebase/auth";
-import { useSendOtp, useVerifyOtp } from "../../customHooks/hook";
-import { UseSomthingWentWrong, useOtpSubmit } from "../../toastify/toasty";
+import { authentication } from "../../utils/config/firebase";
+import { useSendOtp, useVerifyOtp } from "../../utils/customHooks/hook";
+import { UseSomthingWentWrong, useOtpSubmit } from "../../utils/toastify/toasty";
 import { useNavigate } from "react-router-dom";
+import { UsegenerateRecaptcha } from "../../utils/customHooks/hook";
 
 const Otp = () => {
   const [count, setCount] = useState(1);
@@ -18,16 +18,6 @@ const Otp = () => {
   const phoneNumber = "+918590628664";
   const { register, control, handleSubmit } = useForm<Otpfomevalue>();
 
-  const generateRecaptcha = () => {
-    window.recaptchaVerifier = new RecaptchaVerifier(
-      "recaptcha-container",
-      {
-        size: "invisible",
-      },
-      authentication
-    );
-  };
-
   const resendOTP = () => {
     isMountedRef.current = false;
     setOtpControler(true);
@@ -38,20 +28,20 @@ const Otp = () => {
   // This useEffect will create re-captcha only the initial render
   useEffect(() => {
     console.log("recatptcha verifier useEffect");
-    generateRecaptcha();
+    UsegenerateRecaptcha(authentication);
   }, []);
 
   // This useEffect is sendinng the otp 
-  useEffect(() => {
-    if (!isMountedRef.current) {
-      console.log("useEffect calling ");
-      if (window.recaptchaVerifier) {
-        let appVerifier = window.recaptchaVerifier;
-        useSendOtp(authentication, phoneNumber, appVerifier);
-      }
-      isMountedRef.current = true;
-    }
-  }, [otpControler, isMountedRef.current, resendOTP]);
+  // useEffect(() => {
+  //   if (!isMountedRef.current) {
+  //     console.log("useEffect calling ");
+  //     if (window.recaptchaVerifier) {
+  //       let appVerifier = window.recaptchaVerifier;
+  //       useSendOtp(authentication, phoneNumber, appVerifier);
+  //     }
+  //     isMountedRef.current = true;
+  //   }
+  // }, [otpControler, isMountedRef.current, resendOTP]);
 
   // This useEffect is sets the timer for resend otp
   useEffect(() => {

@@ -1,32 +1,30 @@
-import { useValidate, RegisterFormData } from "../../formvalidations/register";
+import { useValidate, RegisterFormData } from "../../utils/formvalidations/register";
 import "react-toastify/dist/ReactToastify.css";
 import { useNavigate } from "react-router-dom";
-import { RegisterFn } from "../../api/methods/post";
+import { RegisterFn } from "../../utils/api/methods/post";
+import { addUser } from "../../utils/ReduxStore/slices/userSlice";
 
 
 
 // custom hook
-import { UseSomthingWentWrong, userExistToast } from "../../toastify/toasty";
+import { UseSomthingWentWrong, userExistToast } from "../../utils/toastify/toasty";
 import { useEffect, useState } from "react";
-import GoogleSignup from "../../sections/google/GoogleSignup";
+import GoogleSignup from "../../components/sections/google/GoogleSignup";
+import { useDispatch } from "react-redux";
 
 // Register Component
 const Register = () => {
-  // const [vari,setVari] = useState(true)
-  // useEffect(()=>{
-  //        var fn=()=>{
-  //        if(vari)return UseSomthingWentWrong()
-  //        }
-  //        fn()
-  // },[])
+
   const Navigate = useNavigate();
+  const dispatch = useDispatch()
   const { errors, handleSubmit, register } = useValidate();
   const formSubmit = async (Data: RegisterFormData) => {
     {
       try {
         const response: any = await RegisterFn({ ...Data }); // This is the post methode
+        dispatch(addUser(response.data))
         if (response.data.email) {
-          Navigate("/Otp"); // Navigating to a page for otp verifiation
+          Navigate("/"); // Navigating to a page for otp verifiation
         } else if (response.data.UserExist) {
           userExistToast();
         } else if (response.error) {

@@ -1,5 +1,5 @@
 import { GoogleAuthProvider, getAuth, signInWithPopup } from "firebase/auth";
-import { app } from "../../config/firebase";
+import { app } from "../../../utils/config/firebase";
 import { useNavigate } from "react-router-dom";
 // For Firebase JS SDK v7.20.0 and later, measurementId is optional
 

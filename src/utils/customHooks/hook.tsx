@@ -5,6 +5,8 @@ import {
 } from "firebase/auth";
 import { UseSomthingWentWrong, useOtpSubmit } from "../toastify/toasty";
 import { Otpfomevalue } from "../types/types";
+import { RecaptchaVerifier } from "firebase/auth";
+
 
 // This hook joins the object of strings and convertes into number
 export const useConvertString = (data: object) => {
@@ -29,6 +31,17 @@ export const useSendOtp = (
         "sorry too many attempts please try after some times"
       );
     });
+};
+
+
+export const UsegenerateRecaptcha = (auth:Auth) => {
+  window.recaptchaVerifier = new RecaptchaVerifier(
+    "recaptcha-container",
+    {
+      size: "invisible",
+    },
+    auth
+  );
 };
 
 // custom hook for verfying the otp

@@ -1,5 +1,5 @@
 import  { useEffect, useState } from "react";
-import { getPost } from "../../api/methods/get";
+import { getPost } from "../../utils/api/methods/get";
 import Comments from "./Comments";
 
 const ViewPost = () => {
