@@ -1,7 +1,7 @@
 
-import { useValidate, formSubmit} from "../../formvalidations/login";
-import LoginButton from "../../sections/auth0/authLogin";
-import LogoutButton from "../../sections/auth0/authLogout";
+import { useValidate, formSubmit} from "../../utils/formvalidations/login";
+import LoginButton from "../../components/sections/auth0/authLogin";
+import LogoutButton from "../../components/sections/auth0/authLogout";
 import { NavLink } from "react-router-dom";
 
 function Login() {

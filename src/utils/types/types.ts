@@ -17,4 +17,6 @@ declare global {
       }
     }
     
-
+   export interface userSlice {
+      user:{userData:{firstName?:string}}
+    }

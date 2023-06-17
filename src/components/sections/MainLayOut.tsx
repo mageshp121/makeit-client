@@ -1,12 +1,13 @@
 import { ReactNode } from "react";
-import NavBar from "../components/navBar";
-import LeftPage from "../pages/LeftSideBar/Leftpage";
+import NavBar from "../navBar";
+import LeftPage from "../../pages/LeftSideBar/Leftpage";
 
 type MainLayoutProps = {
   children: ReactNode;
 };
 
 export const MainLayout = ({ children }: MainLayoutProps) => (
+
   <div className="h-screen bg-slate-500 bg-gradient-to-br from-blue-300 to-white">
    <div className="pt-5">
    <NavBar/>

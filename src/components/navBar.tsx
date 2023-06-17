@@ -1,6 +1,16 @@
 import { Link } from "react-router-dom";
+import { useSelector } from "react-redux";
+import store from "../utils/ReduxStore/store/Store";
+import { Selector } from "@reduxjs/toolkit";
+import { userSlice } from "../utils/types/types";
+// interface selector{
+//   user:{userData:{firstName?:string}}
+// }
 
 const NavBar = () => {
+  const userData =  useSelector((store:userSlice) => store.user.userData)
+  console.log(userData,'userdata');
+  
     return (
           <nav className="bg-white ml-6 mr-6 rounded-xl border-gray-200 dark:bg-white">
             <div className="max-w-screen-xl flex flex-wrap items-center justify-between mx-auto p-4">
@@ -38,7 +48,7 @@ const NavBar = () => {
                 >
                   <div className="px-4 py-3">
                     <span className="block text-sm text-gray-900 dark:text-white">
-                      Bonnie Green
+                
                     </span>
                     <span className="block text-sm  text-gray-500 truncate dark:text-gray-400">
                       name@flowbite.com
@@ -125,6 +135,7 @@ const NavBar = () => {
                     >
                      JOBS
                     </a>
+                    {userData?.firstName}
                   </li>
                   <li>
                     {/* <a

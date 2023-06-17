@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { getAllPost } from "../../api/methods/get";
+import { getAllPost } from "../../utils/api/methods/get";
 import { Link } from "react-router-dom";
 
 function Post() {
