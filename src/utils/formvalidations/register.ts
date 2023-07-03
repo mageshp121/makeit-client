@@ -13,6 +13,7 @@ export type RegisterFormData = {
   phone: string;
   password: string;
   confirmPassword: string;
+  roll:string
 };
 
 //  Zod validation  
@@ -52,6 +53,7 @@ export const schama: ZodType<RegisterFormData> = z
         message: "Password must contain at least one uppercase letter",
       }),
     confirmPassword: z.string(),
+    roll:z.string(),
   })
   .refine((data) => data.password === data.confirmPassword, {
     message: "Password do not match",

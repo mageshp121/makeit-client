@@ -2,7 +2,8 @@
 
 
 function Navbottom(props:any) {
-    const name=props.name
+    const Title=props.Title
+    const subTitle=props. subTitle
     
   return (
     <>
@@ -13,13 +14,13 @@ function Navbottom(props:any) {
       </div>
       <div className='md:w-1/3 flex flex-col justify-center sm:w-1/2 text-center h-60'>
           <h1 className='text-7xl font-semibold text-white '>
-           {name}
+           {Title}
           </h1>
           <br />
-          <h2 className="text-2xl  text-white">Create Your Account</h2>
+          <h2 className="text-2xl  text-white">{subTitle}</h2>
         </div>
       <div className='md:w-1/3 shape-1 animate-off-on flex flex-col justify-end px-24 py-14  sm:w-1/3 flex-auto h-60' >
-      <img className='w-32'src="/src/image/business-3d-stack-of-different-books.png" alt="cour" />
+      <img className='w-32'src="/business-3d-stack-of-different-books.png" alt="cour" />
       </div>
     </div>
     </div>

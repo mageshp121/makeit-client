@@ -1,19 +1,16 @@
 import {
   useValidate,
   RegisterFormData,
-} from "../../utils/formvalidations/register";
+} from "../../../utils/formvalidations/register";
 import "react-toastify/dist/ReactToastify.css";
 import { Link, useNavigate } from "react-router-dom";
-import { RegisterFn } from "../../utils/api/methods/post";
-import { addUser } from "../../utils/ReduxStore/slices/userSlice";
+import { RegisterFn } from "../../../utils/api/methods/post";
+import { addUser } from "../../../utils/ReduxStore/slices/userSlice";
 
 // custom hook
-import {
-  UseSomthingWentWrong,
-} from "../../utils/toastify/toasty";
 import { useDispatch } from "react-redux";
-import FormEror from "../ErrorComponents/FormEror";
-import { ErrorComponent } from "../ErrorComponents/ErrorComponent";
+import FormEror from "../../ErrorComponents/FormEror";
+import { ErrorComponent } from "../../ErrorComponents/ErrorComponent";
 import { useState } from "react";
 
 // Register Component
@@ -26,8 +23,8 @@ const Register = () => {
   const formSubmit = async (Data:RegisterFormData) => {
     console.log(Data, "submiting dataa");
     try {
-          const response: any = await RegisterFn({ ...Data }); // axios post methode
-          console.log(response.data.Message,'saaasaaaaaaa');
+        const response: any = await RegisterFn({ ...Data }); // axios post methode
+        console.log(response.data.Message,'saaasaaaaaaa');
         //   dispatch(addUser(response.data));
       if (response.data.Message) {
         setErrorMessage(response.data.Message[0].error);
@@ -53,7 +50,7 @@ const Register = () => {
           <div className="flex-1 md:hidden text-center lg:flex">
             <div
               className="w-full m-12 bg-center bg-no-repeat bg-contain xl:m-16"
-              style={{ backgroundImage: "url(/src/image/register-img.png)" }}
+              style={{ backgroundImage: "url(/register-img.png)" }}
             />
           </div>
           <div className=" flex-row lg:w-1/2 xl:w-5/12 p-14 ">
@@ -66,6 +63,7 @@ const Register = () => {
             className="w-full hidden px-6 py-4 mt-5 text-sm font-medium placeholder-gray-500  bg-neutral-200  border border-gray-200 rounded-lg focus:border-gray-400 focus:bg-white custom-outline-none"
             type="text"
             value={'user'}
+            {...register('roll')}
           />
                     <input
                       className="w-full px-6 py-4 mt-5 text-sm font-medium shadow-lg placeholder-gray-500  bg-neutral-200  focus:ring-teal-500 focus:border-teal-500 border-gray-200 rounded-lg  focus:bg-white custom-outline-none"
@@ -114,18 +112,7 @@ const Register = () => {
                     />
                   </form>
                   <p className="mt-6 text-xs text-center text-gray-600">
-                    I agree to the
-                    <a
-                      href="#"
-                      className="border-b border-gray-500 border-dotted"
-                    >
-                      Terms of Service
-                    </a>
-                    and its
-                    <a
-                      href="#"
-                      className="border-b border-gray-500 border-dotted"
-                    ></a>
+                  <Link to={'login'}><span>Allready have an account <span className="underline text-green-500">Login</span></span></Link>
                   </p>
                 </div>
               </div>

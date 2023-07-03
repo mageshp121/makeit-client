@@ -7,7 +7,7 @@ function HomeNabBottom() {
         <div className="bg-gradient-to-r pl-8  overflow-hidden text-center  shadow-2xl  flex gap-4 w-auto h-[44rem]  from-green-300  to-teal-500 via-teal-400 sm:ws md:w-screen  ">
           <div className="rounded-full   w-[50%]  flex  ">
             <div className=" pt-7 mt-6 bg-slate-50/5 rounded-full">
-              <img src="/src/image/banner-img-1.png" alt="" />
+              <img src="/banner-img-1.png" alt="" />
             </div>
           </div>
           <div className="h-[rem] p-8   mt-20 flex-auto">
@@ -36,17 +36,17 @@ function HomeNabBottom() {
               <div className=" flex mb-5 -space-x-4">
                 <img
                   className="w-10 h-10 border-2 rounded-full"
-                  src="/src/image/images (2).jpeg"
+                  src="/images (2).jpeg"
                   alt=""
                 />
                 <img
                   className="w-10 h-10 border-2 rounded-full "
-                  src="/src/image/photo-1633332755192-727a05c4013d.jpeg"
+                  src="/photo-1633332755192-727a05c4013d.jpeg"
                   alt=""
                 />
                 <img
                   className="w-10 h-10 border-2 rounded-full "
-                  src="/src/image/images (1).jpeg"
+                  src="/images (1).jpeg"
                   alt=""
                 />
               </div>
@@ -61,9 +61,9 @@ function HomeNabBottom() {
             </div>
             <div className=" h-[20%]  w-[100%] flex ">
               <div className="flex-auto shape-1 animate-off-on ">
-                <img src="/src/image/shape-2.svg" alt="" />
+                <img src="/shape-2.svg" alt="" />
               </div>
-              <img src="src/image/shape-3 (1).svg" alt="" />
+              <img src="/shape-3 (1).svg" alt="" />
             </div>
           </div>
         </div>

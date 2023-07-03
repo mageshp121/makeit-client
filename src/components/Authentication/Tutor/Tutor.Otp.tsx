@@ -1,17 +1,17 @@
 import { useForm } from "react-hook-form";
 import { DevTool } from "@hookform/devtools";
-import { Otpfomevalue } from "../../utils/types/types";
+import { Otpfomevalue } from "../../../utils/types/types";
 import { useEffect, useState, useRef } from "react";
-import { authentication } from "../../utils/config/firebase";
-import { useSendOtp, useVerifyOtp } from "../../utils/customHooks/hook";
+import { authentication } from "../../../utils/config/firebase";
+import { useSendOtp, useVerifyOtp } from "../../../utils/customHooks/hook";
 import {
   UseSomthingWentWrong,
   useOtpSubmit,
-} from "../../utils/toastify/toasty";
+} from "../../../utils/toastify/toasty";
 import { useNavigate } from "react-router-dom";
-import { UsegenerateRecaptcha } from "../../utils/customHooks/hook";
+import { UsegenerateRecaptcha } from "../../../utils/customHooks/hook";
 
-function OTP() {
+function TutorOtp() {
   const [count, setCount] = useState(1);
   const [minutes, setMinutes] = useState(1);
   const [seconds, setSeconds] = useState(30);
@@ -90,7 +90,7 @@ function OTP() {
           <div className="flex-1 md:hidden text-center lg:flex">
             <div
               className="w-full m-12 bg-center bg-no-repeat bg-contain xl:m-16"
-              style={{ backgroundImage: "url(/src/image/register-img.png)" }}
+              style={{ backgroundImage: "url(/teaching-img.png)" }}
             />
           </div>
           <div className=" lg:w-1/2 pt-52 xl:w-5/12 p-14 ">
@@ -154,4 +154,4 @@ function OTP() {
     
   );
 }
-export default OTP;
+export default TutorOtp;

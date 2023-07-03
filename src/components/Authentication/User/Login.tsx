@@ -1,12 +1,12 @@
 
-import { useNavigate } from "react-router-dom";
-import Auth from "../../pages/Auth/Auth";
-import { LoginFn } from "../../utils/api/methods/post";
-import { useValidate, LoginFormData} from "../../utils/formvalidations/login";
-import FormEror from "../ErrorComponents/FormEror";
+import { Link, useNavigate } from "react-router-dom";
+import Auth from "../../../pages/Auth/Auth";
+import { LoginFn } from "../../../utils/api/methods/post";
+import { useValidate, LoginFormData} from "../../../utils/formvalidations/login";
+import FormEror from "../../ErrorComponents/FormEror";
 import { useState } from "react";
-import { ErrorComponent } from "../ErrorComponents/ErrorComponent";
-import { UseSomthingWentWrong } from "../../utils/toastify/toasty";
+import { ErrorComponent } from "../../ErrorComponents/ErrorComponent";
+import { UseSomthingWentWrong } from "../../../utils/toastify/toasty";
 
 function Login() {
 
@@ -43,7 +43,7 @@ function Login() {
           <div className="flex-1 md:hidden text-center lg:flex">
             <div
               className="w-full m-12 bg-center bg-no-repeat bg-contain xl:m-16"
-              style={{ backgroundImage: "url(/src/image/register-img.png)" }}
+              style={{ backgroundImage: "url(/register-img.png)" }}
             />
           </div>
           <div className=" lg:w-1/2 xl:w-5/12 p-14 ">
@@ -104,20 +104,8 @@ function Login() {
                 />
         </form>
           <p className="mt-6 text-xs text-center text-gray-600">
-            I agree to the
-            <a
-              href="#"
-              className="border-b border-gray-500 border-dotted"
-            >
-              Terms of Service
-            </a>
-            and its
-            <a
-              href="#"
-              className="border-b border-gray-500 border-dotted"
-            >
-              Privacy Policy
-            </a>
+          <Link to={'/auth'}><span>No Account <span className="underline text-green-500">Register</span></span></Link>
+
           </p>
           
         </div>
