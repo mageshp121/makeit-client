@@ -14,7 +14,7 @@ export const userExistToast = () => {
 };
 
 export const UseSomthingWentWrong = () => {
-  return toast.error("something went wrong please try again", {
+  return toast.error('something went wrong', {
     position: "top-center",
     autoClose: 5000,
     hideProgressBar: false,

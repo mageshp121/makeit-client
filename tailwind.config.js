@@ -5,8 +5,22 @@ export default {
     "./src/**/*.{js,ts,jsx,tsx}",
   ],
   theme: {
-    extend: {},
+    extend: {
+      inset: {
+        '-shape-1-bottom': '-80px',
+        'shape-1-left': '100px',
+      },
+      animation: {
+        'off-on': 'off-on 10s linear infinite',
+      },
+      keyframes: {
+        'off-on': {
+          '0%': { opacity: 0 },
+          '90%': { opacity: 1 },
+          '100%': { opacity: 0 },
+        },
+      },
+    },
   },
-  plugins: [],
-}
-
+  plugins: [require('flowbite/plugin')],
+};

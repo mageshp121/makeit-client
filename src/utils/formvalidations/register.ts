@@ -74,26 +74,5 @@ export const useValidate = () => {
   };
 };
 
-// export const formSubmit = async(Data: RegisterFormData) => {
-//   console.log(Data);
-  
-//    {
-//     try {
-//       const response = await axios.post('http://makeit.com/api/auth/register', {...Data });
-//            // Handle the response data
 
-//       console.log(response.data)
-    
-//     } catch (error) {
-//       console.error(error,'errrorororor'); // Handle the error
-      
-//     }
-//   }
-  
-//     //  write the post method here for sending from data to the server
-//   // if(data)console.log("working fine", data);else{
-//   //   console.log("not working");
-//   // }
-   
-// };
 

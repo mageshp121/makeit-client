@@ -9,4 +9,8 @@
       max-height: calc(100vh - 105px);
     }
   }
-  
+@layer base {
+   h1, h2{
+    font-family: 'Josefin Sans', sans-serif;
+   }
+}

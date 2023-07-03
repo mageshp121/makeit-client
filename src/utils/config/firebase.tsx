@@ -1,26 +1,6 @@
 
 import { getAuth } from "firebase/auth";
-
-// const firebaseConfig = {
-//   apiKey:,
-//   authDomain: 
-//   projectId:
-//   storageBucket:,
-//   messagingSenderId: 
-//   appId:
-//   measurementId: 
-// };
-
-
-// const app = initializeApp(firebaseConfig);
-// export const authentication = getAuth(app)
-
-
-
-// signup firebase config
-
 import { initializeApp } from "firebase/app";
-
 
 const firebaseConfig = {
   apiKey: "AIzaSyAudBDTaYPZYSpU7MhLS6ilEhv1qK4ot-Q",
