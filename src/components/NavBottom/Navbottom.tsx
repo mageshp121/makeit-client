@@ -8,7 +8,7 @@ function Navbottom(props:any) {
   return (
     <>
     <div className="pt-16">
-    <div className='bg-gradient-to-r overflow-hidden text-center  shadow-2xl  flex gap-4   from-green-300  to-teal-600 via-teal-400 sm:ws md:w-screen h-72 p-5 ' >
+    <div className='bg-gradient-to-r overflow-hidden text-center  shadow-xl  flex gap-4   from-green-300  to-teal-600 via-teal-400 sm:ws md:w-screen h-72 p-5 ' >
       <div className=' shape-1 animate-off-on py-10 px-20 md:w-1/3 sm:w-1/3 flex-auto h-60'>
       <img src="/page-banner-shape-1.svg" alt="cour" />
       </div>
@@ -24,7 +24,6 @@ function Navbottom(props:any) {
       </div>
     </div>
     </div>
-    
     </>
   )
         

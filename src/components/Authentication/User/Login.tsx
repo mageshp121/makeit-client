@@ -1,6 +1,5 @@
 
 import { Link, useNavigate } from "react-router-dom";
-import Auth from "../../../pages/Auth/Auth";
 import { LoginFn } from "../../../utils/api/methods/post";
 import { useValidate, LoginFormData} from "../../../utils/formvalidations/login";
 import FormEror from "../../ErrorComponents/FormEror";

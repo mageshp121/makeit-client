@@ -9,11 +9,13 @@ function App() {
   
   
   return (
+    <div className="bg-[#f3f2f0]">
     <Routes>
       <Route path="/*" element={<UserRouter />} />
       <Route path="tutor/*" element={<TutorRouter />} />
       <Route path="*" element={<Eor />} />
     </Routes>
+    </div>
   ); 
 }
 
