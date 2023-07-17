@@ -1,11 +1,11 @@
 import {
-  useValidate,
+  useRegisterValidate,
   RegisterFormData,
 } from "../../../utils/formvalidations/register";
 import "react-toastify/dist/ReactToastify.css";
 import { Link, useNavigate } from "react-router-dom";
 import { RegisterFn } from "../../../utils/api/methods/post";
-import { addUser } from "../../../utils/ReduxStore/slices/userSlice";
+
 
 // custom hook
 import { useDispatch } from "react-redux";
@@ -17,7 +17,7 @@ import { useState } from "react";
 const Register = () => {
   const Navigate = useNavigate();
   const dispatch = useDispatch();
-  const { errors, handleSubmit, register } = useValidate();
+  const { errors, handleSubmit, register } = useRegisterValidate();
   const [errorrMessage,setErrorMessage] = useState('')
   console.log(errors, "errorr");
   const formSubmit = async (Data:RegisterFormData) => {
@@ -43,7 +43,7 @@ const Register = () => {
        {/* Display error messages */}
        <FormEror errors={errors}/>
        {
-        errorrMessage && <ErrorComponent data={{path:'login',Message:errorrMessage}}/>
+        errorrMessage &&  <ErrorComponent data={{path:'login',Message:errorrMessage}}/>
        }
       <div className="flex justify-center min-h-screen">
         <div className="flex  justify-center  flex-1 max-w-screen-xl   sm:rounded-lg">

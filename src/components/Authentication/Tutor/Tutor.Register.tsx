@@ -1,5 +1,5 @@
 import {
-  useValidate,
+useRegisterValidate,
   RegisterFormData,
 } from "../../../utils/formvalidations/register";
 import "react-toastify/dist/ReactToastify.css";
@@ -17,7 +17,7 @@ import { useState } from "react";
 const TutorRegister = () => {
   const Navigate = useNavigate();
   const dispatch = useDispatch();
-  const { errors, handleSubmit, register } = useValidate();
+  const { errors, handleSubmit, register } = useRegisterValidate();
   const [errorrMessage,setErrorMessage] = useState('')
   console.log(errors, "errorr");
   const formSubmit = async (Data:RegisterFormData) => {
@@ -25,12 +25,11 @@ const TutorRegister = () => {
     try {
         const response: any = await RegisterFn({ ...Data }); // axios post methode
         console.log(response.data.Message,'saaasaaaaaaa');
-        //   dispatch(addUser(response.data));
+          dispatch(addUser(response.data));
       if (response.data.Message) {
         setErrorMessage(response.data.Message[0].error);
         console.log('user oke');
       } else{
-        console.log('erro comingadasdas');
         // response.data.userData.email ( data format )
         Navigate("otp"); // Navigating to a page for otp verifiation
       }

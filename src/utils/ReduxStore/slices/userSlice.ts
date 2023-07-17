@@ -9,7 +9,6 @@ const userSlice = createSlice({
         addUser:(state,action)=>{
              state.userData = {...state.userData,...action.payload}
              console.log(state.userData,'state.user user added');
-             
         },
         getUser:()=>{},
         updateUser:()=>{}

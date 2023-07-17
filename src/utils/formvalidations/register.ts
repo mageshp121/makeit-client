@@ -63,7 +63,7 @@ export const schama: ZodType<RegisterFormData> = z
 
 
   // custom Hook 
-export const useValidate = () => {
+export const useRegisterValidate = () => {
   const {
     register,
     handleSubmit,

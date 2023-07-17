@@ -1,32 +1,89 @@
-import { RecaptchaVerifier} from "firebase/auth";
+import { RecaptchaVerifier } from "firebase/auth";
 import { RegisterFormData } from "../formvalidations/register";
 import { FieldErrors } from "react-hook-form";
 
-
 export type Otpfomevalue = {
-      password:string
-}
+  password: string;
+};
 
 declare global {
-      interface Window {
-        recaptchaVerifier?: RecaptchaVerifier;
-        confirmationResult?: any;
-      }
-    }
-    
-   export interface userSlice {
-      user:{userData:{firstName?:string}}
-    }
+  interface Window {
+    recaptchaVerifier?: RecaptchaVerifier;
+    confirmationResult?: any;
+  }
+}
 
-    export interface propsType {
-      errors: FieldErrors<RegisterFormData>
-    }
-    
-   export interface ErrorData {
-      path: string;
-      Message:string
-    }
+export interface userSlice {
+  user: { userData: { firstName?: string } };
+}
 
-    export interface ErrorComponentProps {
-      data: ErrorData;
-    }
+export interface propsType {
+  errors: FieldErrors<RegisterFormData>;
+}
+
+export interface ErrorData {
+  path: string;
+  Message: string;
+}
+
+export interface ErrorComponentProps {
+  data: ErrorData;
+}
+
+export interface Course {
+  _id: string;
+}
+
+export interface CourseState {
+  courseData: Course[];
+}
+
+export interface CourseId {
+  course: {
+    courseData: [];
+  };
+}
+
+export interface lessone {
+  order: number;
+}
+
+export interface lessoneDataOrder {
+  lessoneDataOrder: lessone;
+}
+
+export interface lessonState{
+  lessone:{
+    lessoneDataOrder:any
+  }
+}
+
+
+export interface LessoneType {
+  _id:string,
+  lessoneS3UrlKey:string,
+  lessoneTitle:string,
+  lessoneOrder:number,
+  tutorId:string,
+  courseId:string
+
+}
+
+export interface CourseRes  {
+_id:string
+WorkingTitle:string,
+ShortDescription:string,
+Description:string,
+Category:string,
+tutorId:string,
+thumbNailImageS3UrlKey:string,
+WhatWilllearn1:string,
+WhatWilllearn2:string,
+WhatWilllearn3:string,
+WhatWilllearn4:string,
+WhoIsThiscourseFor:string,
+prerequesties1:string,
+prerequesties2:string,
+CoursePrice:number,
+drafted:boolean
+}   

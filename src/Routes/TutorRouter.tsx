@@ -5,6 +5,10 @@ import { ErrorComponent } from '../components/ErrorComponents/ErrorComponent'
 import TutorRegister from '../components/Authentication/Tutor/Tutor.Register'
 import TutorAuth from '../pages/Auth/TutorAuth'
 import Profile from '../pages/Profilepage/Profile'
+import Course from '../components/Course/Course'
+import CourseBasicForm from '../components/Forms/Tutor/CourseBasicForm'
+import LessoneForm from '../components/Forms/Tutor/LessoneForm'
+import SingleCourseView from '../components/Course/SingleCourseView'
 
 function TutorRouter() {
   return (
@@ -15,7 +19,12 @@ function TutorRouter() {
         <Route path='otp' element={<TutorOtp/>}/>
         <Route path='*' element={<ErrorComponent data={{path:'/tutor',Message:'Sorry the provided url is not valied'}} />}/>
         </Route>
-      <Route path='/profile' element={<Profile/>}/>
+      <Route path='/profile' element={<Profile/>}>
+        <Route index element={<Course/>}/>
+        <Route path='coursebasic' element={<CourseBasicForm/>} />
+        <Route path='courselesson' element={<LessoneForm/>}/>
+        <Route path='courseview/:id' element={<SingleCourseView/>} />
+      </Route>
    </Routes>
   )
 }

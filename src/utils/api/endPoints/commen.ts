@@ -1,4 +1,7 @@
 export const Register_Api = "/api/user/register"
 export const Login_Api = "/api/user/login"
-export const Post_Api='/api/post/allPosts'
-export const PostByid_Api='/api/post/Pid/6477680fe5b3aac9a5d6b92c'
+export const Create_Course_Api ="/api/course/courses"
+export const FetchCourseData_With_TutorId = '/api/course/courses/'
+export const Create_lessoneApi ="/api/course/lessones"
+export const FetchLessons_With_Courseid = '/api/course/lessones/'
+export const FetchCourse_By_Id = "/api/course/course/"

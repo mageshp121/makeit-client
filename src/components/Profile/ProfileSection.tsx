@@ -1,3 +1,5 @@
+import { Link } from "react-router-dom";
+
 function ProfileSection() {
   return (
     <>
@@ -26,9 +28,11 @@ function ProfileSection() {
               <div className="w-60 mt-3  py-2 flex justify-center bg-[#faf7f3] border hover:scale-105 rounded-lg shadow-md  h-11">
               <h1 className="hover:text-teal-500 cursor-pointer">Drafted Courses</h1>
               </div>
+              <Link to={'/tutor/profile/coursebasic'} >
               <div className="w-60 mt-4  py-2 flex justify-center  bg-teal-600 border hover:scale-105 rounded-lg shadow-md  h-11">
-              <h1 className=" text-white  cursor-pointer">Drafted Courses</h1>
+              <h1 className=" text-white  cursor-pointer">Create new course</h1>
               </div>
+              </Link>
             </div>
           </div>
         </div>
