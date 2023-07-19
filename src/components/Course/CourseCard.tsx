@@ -1,6 +1,5 @@
 import React, { useEffect, useState } from "react";
 import Lottie from "lottie-react";
-import heart from "../../data/heart Outlines Comp 1.json";
 import Tutordetails from "./Tutordetails";
 import CardUpper from "../common/CardUpper";
 import { getAllCourses } from "../../utils/api/methods/get";
