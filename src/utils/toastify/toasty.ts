@@ -14,7 +14,7 @@ export const userExistToast = () => {
 };
 
 export const UseSomthingWentWrong = () => {
-  return toast.error("something went wrong please try again", {
+  return toast.error('something went wrong', {
     position: "top-center",
     autoClose: 5000,
     hideProgressBar: false,
@@ -27,6 +27,20 @@ export const UseSomthingWentWrong = () => {
 };
 
 export const useOtpSubmit = (msg: string) => {
+  return toast.error(msg, {
+    position: "top-center",
+    autoClose: 5000,
+    hideProgressBar: false,
+    closeOnClick: true,
+    pauseOnHover: true,
+    draggable: true,
+    progress: undefined,
+    theme: "light",
+  });
+};
+
+
+export const UseCommen = (msg:string) => {
   return toast.error(msg, {
     position: "top-center",
     autoClose: 5000,

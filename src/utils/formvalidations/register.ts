@@ -13,6 +13,7 @@ export type RegisterFormData = {
   phone: string;
   password: string;
   confirmPassword: string;
+  roll:string
 };
 
 //  Zod validation  
@@ -52,6 +53,7 @@ export const schama: ZodType<RegisterFormData> = z
         message: "Password must contain at least one uppercase letter",
       }),
     confirmPassword: z.string(),
+    roll:z.string(),
   })
   .refine((data) => data.password === data.confirmPassword, {
     message: "Password do not match",
@@ -61,7 +63,7 @@ export const schama: ZodType<RegisterFormData> = z
 
 
   // custom Hook 
-export const useValidate = () => {
+export const useRegisterValidate = () => {
   const {
     register,
     handleSubmit,
@@ -74,26 +76,5 @@ export const useValidate = () => {
   };
 };
 
-// export const formSubmit = async(Data: RegisterFormData) => {
-//   console.log(Data);
-  
-//    {
-//     try {
-//       const response = await axios.post('http://makeit.com/api/auth/register', {...Data });
-//            // Handle the response data
 
-//       console.log(response.data)
-    
-//     } catch (error) {
-//       console.error(error,'errrorororor'); // Handle the error
-      
-//     }
-//   }
-  
-//     //  write the post method here for sending from data to the server
-//   // if(data)console.log("working fine", data);else{
-//   //   console.log("not working");
-//   // }
-   
-// };
 

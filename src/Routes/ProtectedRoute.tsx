@@ -1,6 +1,4 @@
-import Home from "../pages/Home/Home";
-import Post from "../pages/Post/Post";
-import { MainLayout } from "../components/sections/MainLayOut";
+
 import { Route, Routes,Navigate } from "react-router-dom";
 import { useState } from "react";
 
