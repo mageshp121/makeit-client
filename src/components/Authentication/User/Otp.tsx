@@ -1,26 +1,33 @@
 import { useForm } from "react-hook-form";
 import { DevTool } from "@hookform/devtools";
-import { Otpfomevalue } from "../../../utils/types/types";
+import { Otpfomevalue, Userdata, users } from "../../../utils/types/types";
 import { useEffect, useState, useRef } from "react";
 import { authentication } from "../../../utils/config/firebase";
 import { useSendOtp, useVerifyOtp } from "../../../utils/customHooks/hook";
 import {
+  UseCommen,
   UseSomthingWentWrong,
   useOtpSubmit,
 } from "../../../utils/toastify/toasty";
 import { useNavigate } from "react-router-dom";
 import { UsegenerateRecaptcha } from "../../../utils/customHooks/hook";
+import { useSelector } from "react-redux";
+import store from "../../../utils/ReduxStore/store/Store";
+import React from "react";
 
 function OTP() {
   const [count, setCount] = useState(1);
   const [minutes, setMinutes] = useState(1);
   const [seconds, setSeconds] = useState(30);
+  const [userData,setUserData] = useState({}) as any
   const [otpControler, setOtpControler] = useState(false);
   const Navigate = useNavigate();
   const isMountedRef = useRef(false);
+
+
+
   const phoneNumber = "+918590628664";
   const { register, control, handleSubmit } = useForm<Otpfomevalue>();
-
   const resendOTP = () => {
     isMountedRef.current = false;
     setOtpControler(true);
@@ -28,21 +35,21 @@ function OTP() {
     setSeconds(30);
   };
 
-  //   useEffect(() => {
-  //     console.log("recatptcha verifier useEffect");
-  //     UsegenerateRecaptcha(authentication);
-  //   }, []);
+    useEffect(() => {
+      console.log("recatptcha verifier useEffect");
+      UsegenerateRecaptcha(authentication);
+    }, []);
 
-  //  useEffect(() => {
-  //    if (!isMountedRef.current) {
-  //      console.log("useEffect calling ");
-  //      if (window.recaptchaVerifier) {
-  //        let appVerifier = window.recaptchaVerifier;
-  //        useSendOtp(authentication, phoneNumber, appVerifier);
-  //      }
-  //      isMountedRef.current = true;
-  //    }
-  //  }, [otpControler, isMountedRef.current, resendOTP]);
+   useEffect(() => {
+     if (!isMountedRef.current) {
+       console.log("useEffect calling ");
+       if (window.recaptchaVerifier) {
+         let appVerifier = window.recaptchaVerifier;
+         useSendOtp(authentication, phoneNumber, appVerifier);
+       }
+       isMountedRef.current = true;
+     }
+   }, [otpControler, isMountedRef.current, resendOTP]);
 
   useEffect(() => {
     const interval = setInterval(() => {
@@ -57,12 +64,12 @@ function OTP() {
           setMinutes(minutes - 1);
         }
       }
-    }, 1000);
+    },1000);
 
     return () => {
       clearInterval(interval);
     };
-  }, [seconds]);
+  },[seconds]);
 
   const fromSubit = async (data: Otpfomevalue) => {
     setCount(count + 1);
@@ -70,16 +77,18 @@ function OTP() {
       await useVerifyOtp(data)
         .then((response) => {
           console.log(response, "response");
-          if (response.sucess) Navigate("/Register");
+          if (response.sucess) Navigate("/");
         })
         .catch((err) => {
           console.log("err cathced ", err);
-          // UseSomthingWentWrong();
+          UseCommen('Invalid OTP Please check the OTP')
         });
     } else {
       useOtpSubmit("otp already submited please wait a second");
     }
   };
+
+  
 
   return (
 
@@ -154,4 +163,4 @@ function OTP() {
     
   );
 }
-export default OTP;
+export default React.memo(OTP);;

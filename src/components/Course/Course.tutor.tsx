@@ -1,11 +1,11 @@
 import React, { useEffect, useState } from "react";
-import { getAllCourses } from "../../utils/api/methods/get";
+import { getAllCourses_by_tutorId } from "../../utils/api/methods/get";
 import { Link } from "react-router-dom";
 
      function Course() {
     const [courseData,setCourseData] = useState([]);
     const fn = async ()=>{
-      const courseRes:any = await getAllCourses();
+      const courseRes:any = await getAllCourses_by_tutorId();
       setCourseData(courseRes.data);
       console.log(courseData,'course data');
       console.log(courseRes,'course responseeeeee');

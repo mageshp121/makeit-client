@@ -1,11 +1,10 @@
 import { useForm } from "react-hook-form";
-import { DevTool } from "@hookform/devtools";
 import { Otpfomevalue } from "../../../utils/types/types";
 import { useEffect, useState, useRef } from "react";
 import { authentication } from "../../../utils/config/firebase";
 import { useSendOtp, useVerifyOtp } from "../../../utils/customHooks/hook";
 import {
-  UseSomthingWentWrong,
+  UseCommen,
   useOtpSubmit,
 } from "../../../utils/toastify/toasty";
 import { useNavigate } from "react-router-dom";
@@ -28,21 +27,21 @@ function TutorOtp() {
     setSeconds(30);
   };
 
-  //   useEffect(() => {
-  //     console.log("recatptcha verifier useEffect");
-  //     UsegenerateRecaptcha(authentication);
-  //   }, []);
+    useEffect(() => {
+      console.log("recatptcha verifier useEffect");
+      UsegenerateRecaptcha(authentication);
+    }, []);
 
-  //  useEffect(() => {
-  //    if (!isMountedRef.current) {
-  //      console.log("useEffect calling ");
-  //      if (window.recaptchaVerifier) {
-  //        let appVerifier = window.recaptchaVerifier;
-  //        useSendOtp(authentication, phoneNumber, appVerifier);
-  //      }
-  //      isMountedRef.current = true;
-  //    }
-  //  }, [otpControler, isMountedRef.current, resendOTP]);
+   useEffect(() => {
+     if (!isMountedRef.current) {
+       console.log("useEffect calling ");
+       if (window.recaptchaVerifier) {
+         let appVerifier = window.recaptchaVerifier;
+         useSendOtp(authentication, phoneNumber, appVerifier);
+       }
+       isMountedRef.current = true;
+     }
+   }, [otpControler, isMountedRef.current, resendOTP]);
 
   useEffect(() => {
     const interval = setInterval(() => {
@@ -57,7 +56,7 @@ function TutorOtp() {
           setMinutes(minutes - 1);
         }
       }
-    }, 1000);
+    },1000);
 
     return () => {
       clearInterval(interval);
@@ -70,11 +69,11 @@ function TutorOtp() {
       await useVerifyOtp(data)
         .then((response) => {
           console.log(response, "response");
-          if (response.sucess) Navigate("/Register");
+          if (response.sucess) Navigate("/tutor/profile");
         })
         .catch((err) => {
           console.log("err cathced ", err);
-          // UseSomthingWentWrong();
+          UseCommen('Invalid OTP Please check the OTP')
         });
     } else {
       useOtpSubmit("otp already submited please wait a second");

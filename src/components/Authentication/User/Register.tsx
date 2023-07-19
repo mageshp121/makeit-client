@@ -12,6 +12,7 @@ import { useDispatch } from "react-redux";
 import FormEror from "../../ErrorComponents/FormEror";
 import { ErrorComponent } from "../../ErrorComponents/ErrorComponent";
 import { useState } from "react";
+import { addUser } from "../../../utils/ReduxStore/slices/userSlice";
 
 // Register Component
 const Register = () => {
@@ -25,13 +26,14 @@ const Register = () => {
     try {
         const response: any = await RegisterFn({ ...Data }); // axios post methode
         console.log(response.data.Message,'saaasaaaaaaa');
-        //   dispatch(addUser(response.data));
+       
       if (response.data.Message) {
         setErrorMessage(response.data.Message[0].error);
         console.log('user oke');
       } else{
         console.log('erro comingadasdas');
         // response.data.userData.email ( data format )
+           dispatch(addUser(response.data));
         Navigate("otp"); // Navigating to a page for otp verifiation
       }
     } catch (error) {

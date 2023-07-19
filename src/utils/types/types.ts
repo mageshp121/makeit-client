@@ -87,3 +87,26 @@ prerequesties2:string,
 CoursePrice:number,
 drafted:boolean
 }   
+
+export interface Userdata {
+  _id :string, 
+  firstName : string,
+  lastName: string,
+  email:string,
+  phone:number,
+  password:string,
+  roll:string
+  isOtPVerified:boolean
+}
+
+export interface users {
+  user:{
+    userData:{}
+  }
+}
+
+export interface googleData{
+  status : boolean
+  userEmail: string | null
+  userProfileImageGooleUrl : string | null
+}

@@ -5,10 +5,10 @@ import { ErrorComponent } from '../components/ErrorComponents/ErrorComponent'
 import TutorRegister from '../components/Authentication/Tutor/Tutor.Register'
 import TutorAuth from '../pages/Auth/TutorAuth'
 import Profile from '../pages/Profilepage/Profile'
-import Course from '../components/Course/Course'
+import Course from '../components/Course/Course.tutor'
 import CourseBasicForm from '../components/Forms/Tutor/CourseBasicForm'
 import LessoneForm from '../components/Forms/Tutor/LessoneForm'
-import SingleCourseView from '../components/Course/SingleCourseView'
+import SingleCourseView from '../components/Course/SingleCourseView.tutor'
 
 function TutorRouter() {
   return (

@@ -4,7 +4,7 @@ function HomeNabBottom() {
   return (
     <>
       <div className="pt-16">
-        <div className="bg-gradient-to-r pl-8  overflow-hidden text-center  shadow-2xl  flex gap-4 w-auto h-[44rem]  from-green-300  to-teal-500 via-teal-400 sm:ws md:w-screen  ">
+        <div className="bg-gradient-to-r pl-8  overflow-hidden text-center  shadow-md  flex gap-4 w-auto h-[44rem]  from-green-300  to-teal-500 via-teal-400 sm:ws md:w-screen  ">
           <div className="rounded-full   w-[50%]  flex  ">
             <div className=" pt-7 mt-6 bg-slate-50/5 rounded-full">
               <img src="/banner-img-1.png" alt="" />

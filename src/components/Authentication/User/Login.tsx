@@ -6,9 +6,11 @@ import FormEror from "../../ErrorComponents/FormEror";
 import { useState } from "react";
 import { ErrorComponent } from "../../ErrorComponents/ErrorComponent";
 import { UseSomthingWentWrong } from "../../../utils/toastify/toasty";
+import { useGoogleSignIn } from "../../../utils/customHooks/hook";
+import { Auth } from "firebase/auth";
+import { authentication } from "../../../utils/config/firebase";
 
 function Login() {
-
     const navigate = useNavigate()
     const { errors, handleSubmit, register } = useValidate();
     const [errorMessage,setErrorMessage] = useState('')
@@ -27,6 +29,18 @@ function Login() {
             UseSomthingWentWrong();
         }
     }
+
+  const googleSignIn = async (auth: Auth) => {
+      try {
+        const response = await useGoogleSignIn(auth);
+        if (response.status) {
+          navigate("/tutor/profile");
+        }
+      } catch (error) {
+        console.log(error);
+        UseSomthingWentWrong();
+      }
+    };
   return (
 
 <>
@@ -51,7 +65,7 @@ function Login() {
         Sign up</h3>
       <div className="flex-1 w-full ">
         <div className="flex flex-col items-center">
-          <button className="flex items-center justify-center w-full max-w-xs py-3 font-bold text-gray-500 transition-all duration-300 ease-in-out bg-neutral-200 rounded-lg shadow-sm focus:outline-none hover:shadow focus:shadow-sm focus:shadow-outline">
+          <button onClick={()=>googleSignIn(authentication)} className="flex items-center justify-center w-full max-w-xs py-3 font-bold text-gray-500 transition-all duration-300 ease-in-out bg-neutral-200 rounded-lg shadow-sm focus:outline-none hover:shadow focus:shadow-sm focus:shadow-outline">
             <div className="p-2 bg-white rounded-full">
               <svg className="w-4" viewBox="0 0 533.5 544.3">
                 <path
@@ -77,7 +91,7 @@ function Login() {
         </div>
 
         <div className="my-10 text-center border-b">
-          <div className="inline-block  text-sm font-medium leading-none tracking-wide text-gray-600 transform translate-y-1/2 bg-white">
+          <div className="inline-block  text-sm font-medium leading-none tracking-wide text-gray-600 transform translate-y-1/2 ">
             Or sign up with e-mail
           </div>
         </div>

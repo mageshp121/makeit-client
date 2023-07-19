@@ -1,12 +1,13 @@
 import client from "../baseUrl/axios.baseUrl";
-import { LessoneType,CourseRes } from "../../types/types";
 import {
   FetchCourseData_With_TutorId,
   FetchLessons_With_Courseid,
   FetchCourse_By_Id,
+  Fetch_all_Courses,
+  getUserById
 } from "../endPoints/commen";
 
-export const getAllCourses = async () => {
+export const getAllCourses_by_tutorId = async () => {
   const tutorId = "64acf4006742357551e55edd";
   try {
     const data = await client().get(FetchCourseData_With_TutorId + tutorId);
@@ -18,7 +19,6 @@ export const getAllCourses = async () => {
 
 export const courseLessone = async (id: string) => {
     console.log(id,'iddddddd');
-    
   try {
     const data = await client().get(FetchLessons_With_Courseid + id);
     return data;
@@ -26,6 +26,7 @@ export const courseLessone = async (id: string) => {
     return error;
   }
 };
+
 
 export const getCoursebyId = async (id: string) => {
     console.log(id,'iddddddd');
@@ -36,3 +37,22 @@ export const getCoursebyId = async (id: string) => {
     return error;
   }
 };
+
+export const getAllCourses =async () =>{
+try {
+ const data = await client().get(Fetch_all_Courses);
+ return data
+} catch (error) {
+   return error
+}
+}
+
+export const getuserBYId = async (id:string) =>{
+  try {
+    const data = await client().get(getUserById+id);
+    return data
+  } catch (error) {
+    return error
+  }
+
+}
