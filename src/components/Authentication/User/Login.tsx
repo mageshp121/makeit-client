@@ -1,5 +1,5 @@
 
-import { Link, useNavigate } from "react-router-dom";
+import { Link, Navigate, useNavigate } from "react-router-dom";
 import { LoginFn } from "../../../utils/api/methods/post";
 import { useValidate, LoginFormData} from "../../../utils/formvalidations/login";
 import FormEror from "../../ErrorComponents/FormEror";
@@ -9,9 +9,15 @@ import { UseSomthingWentWrong } from "../../../utils/toastify/toasty";
 import { useGoogleSignIn } from "../../../utils/customHooks/hook";
 import { Auth } from "firebase/auth";
 import { authentication } from "../../../utils/config/firebase";
+import { getUserByEmail } from "../../../utils/api/methods/get";
+import { useDispatch } from "react-redux";
+import { addUser,clearUser } from "../../../utils/ReduxStore/slices/userSlice";
+import { addtoken } from "../../../utils/ReduxStore/slices/tokenSlice";
+
 
 function Login() {
-    const navigate = useNavigate()
+    const navigate = useNavigate();
+    const dispatch = useDispatch()
     const { errors, handleSubmit, register } = useValidate();
     const [errorMessage,setErrorMessage] = useState('')
     const formSubmit=async(Data:LoginFormData)=>{
@@ -23,18 +29,45 @@ function Login() {
             console.log(response.data.Message);
             setErrorMessage(response.data.Message[0].error)
             }else{
+              if(response.data.userWithoutPassword.roll === "user"){
+                dispatch(clearUser());
+                dispatch(addUser(response.data.userWithoutPassword));
+                dispatch(addtoken(response.data.accesToken))
+                localStorage.setItem("Token",response.data.reFreshToken);
                 navigate("/")
+              }else{
+                navigate("/tutor/login")
+              }
+                
             }
           } catch (error) {
             UseSomthingWentWrong();
         }
     }
 
-  const googleSignIn = async (auth: Auth) => {
+  const googleSignInUser = async (auth: Auth) => {
       try {
         const response = await useGoogleSignIn(auth);
-        if (response.status) {
-          navigate("/tutor/profile");
+        if (response.status && response.userEmail !== null) {
+          try {
+            const res: any = await getUserByEmail(response.userEmail);
+            if(res.status === 200){
+              if(res.data.userObject.roll === "user"){
+                dispatch(clearUser());
+                dispatch(addUser(res.data.userObject));
+                dispatch(addtoken(res.data.accesToken))
+                localStorage.setItem("Token",res.data.reFreshToken);
+                navigate('/');
+              }else{
+                navigate("/tutor/profile/login");
+              } 
+            }else if(res.response.status === 404){
+              setErrorMessage(res.response.data.errors[0].message);
+            }
+          } catch (error) {
+            console.log(error,'errororor');
+            UseSomthingWentWrong();
+          }
         }
       } catch (error) {
         console.log(error);
@@ -65,7 +98,7 @@ function Login() {
         Sign up</h3>
       <div className="flex-1 w-full ">
         <div className="flex flex-col items-center">
-          <button onClick={()=>googleSignIn(authentication)} className="flex items-center justify-center w-full max-w-xs py-3 font-bold text-gray-500 transition-all duration-300 ease-in-out bg-neutral-200 rounded-lg shadow-sm focus:outline-none hover:shadow focus:shadow-sm focus:shadow-outline">
+          <button onClick={()=>googleSignInUser(authentication)} className="flex items-center justify-center w-full max-w-xs py-3 font-bold text-gray-500 transition-all duration-300 ease-in-out bg-neutral-200 rounded-lg shadow-sm focus:outline-none hover:shadow focus:shadow-sm focus:shadow-outline">
             <div className="p-2 bg-white rounded-full">
               <svg className="w-4" viewBox="0 0 533.5 544.3">
                 <path

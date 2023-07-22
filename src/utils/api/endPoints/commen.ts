@@ -7,6 +7,8 @@
 export const Register_Api = "/api/user/register"
 export const Login_Api = "/api/user/login"
 export const getUserById = "/api/user/users/"
+export const getUserByemail = "/api/user/user/email?email="
+export const getRefersh = "/api/user/refresh"
 
 
 

@@ -1,6 +1,9 @@
 import { Link } from "react-router-dom";
-
+import { useRefreshToken } from "../../utils/customHooks/hook";
 function ProfileSection() {
+
+// const toNewGetReferToken = useRefreshToken()
+
   return (
     <>
       <div className="flex rounded-2xl justify-center border w-80  bg-white hover:shadow-lg border-spacing-1  h-[43rem]">
@@ -22,8 +25,8 @@ function ProfileSection() {
               <div className="w-60 mt-3  py-2 flex justify-center bg-[#faf7f3] border hover:scale-105 rounded-lg shadow-md  h-11">
               <h1 className="hover:text-teal-500 cursor-pointer">You'r Courses</h1>
               </div>
-              <div className="w-60 mt-3  py-2 flex justify-center bg-[#faf7f3] border hover:scale-105 rounded-lg shadow-md  h-11">
-              <h1 className="hover:text-teal-500 cursor-pointer">Sales History</h1>
+              <div  className="w-60 mt-3  py-2 flex justify-center bg-[#faf7f3] border hover:scale-105 rounded-lg shadow-md  h-11">
+              <h1  className="hover:text-teal-500 cursor-pointer">Sales History</h1>
               </div>
               <div className="w-60 mt-3  py-2 flex justify-center bg-[#faf7f3] border hover:scale-105 rounded-lg shadow-md  h-11">
               <h1 className="hover:text-teal-500 cursor-pointer">Drafted Courses</h1>

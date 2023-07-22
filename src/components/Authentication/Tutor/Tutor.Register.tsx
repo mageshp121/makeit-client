@@ -1,49 +1,47 @@
 import {
-useRegisterValidate,
+  useRegisterValidate,
   RegisterFormData,
 } from "../../../utils/formvalidations/register";
 import "react-toastify/dist/ReactToastify.css";
 import { Link, useNavigate } from "react-router-dom";
 import { RegisterFn } from "../../../utils/api/methods/post";
 import { addUser } from "../../../utils/ReduxStore/slices/userSlice";
-
-// custom hook
+import { addtoken } from "../../../utils/ReduxStore/slices/tokenSlice";
 import { useDispatch } from "react-redux";
 import FormEror from "../../ErrorComponents/FormEror";
 import { ErrorComponent } from "../../ErrorComponents/ErrorComponent";
 import { useState } from "react";
+import { UseSomthingWentWrong } from "../../../utils/toastify/toasty";
 
-// Register Component
+
 const TutorRegister = () => {
   const Navigate = useNavigate();
   const dispatch = useDispatch();
   const { errors, handleSubmit, register } = useRegisterValidate();
-  const [errorrMessage,setErrorMessage] = useState('')
+  const [errorrMessage, setErrorMessage] = useState("");
   console.log(errors, "errorr");
-  const formSubmit = async (Data:RegisterFormData) => {
+  const formSubmit = async (Data: RegisterFormData) => {
     console.log(Data, "submiting dataa");
     try {
-        const response: any = await RegisterFn({ ...Data }); // axios post methode
-        console.log(response.data.Message,'saaasaaaaaaa');
-          dispatch(addUser(response.data));
+      const response: any = await RegisterFn({ ...Data });
       if (response.data.Message) {
         setErrorMessage(response.data.Message[0].error);
-        console.log('user oke');
-      } else{
-        // response.data.userData.email ( data format )
-        Navigate("otp"); // Navigating to a page for otp verifiation
+      } else {
+        dispatch(addUser(response.data.userData));
+        dispatch(addtoken(response.data.accesToken));
+        localStorage.setItem("Token", response.data.reFreshToken);
+        Navigate("otp");
       }
     } catch (error) {
-      console.log("kjkjkjkjkjkj");
+      UseSomthingWentWrong();
     }
   };
   return (
     <>
-       {/* Display error messages */}
-       <FormEror errors={errors}/>
-       {
-        errorrMessage && <ErrorComponent data={{path:'login',Message:errorrMessage}}/>
-       }
+      <FormEror errors={errors} />
+      {errorrMessage && (
+        <ErrorComponent data={{ path: "login", Message: errorrMessage }} />
+      )}
       <div className="flex justify-center min-h-screen">
         <div className="flex  justify-center  flex-1 max-w-screen-xl   sm:rounded-lg">
           <div className="flex-1 md:hidden text-center lg:flex">
@@ -58,12 +56,12 @@ const TutorRegister = () => {
               <div className="flex-1 w-full ">
                 <div className="max-w-xs mx-auto">
                   <form onSubmit={handleSubmit(formSubmit)}>
-                  <input
-            className="w-full hidden px-6 py-4 mt-5 text-sm font-medium placeholder-gray-500  bg-neutral-200  border border-gray-200 rounded-lg focus:border-gray-400 focus:bg-white custom-outline-none"
-            type="text"
-            value={'tutor'}
-            {...register('roll')}
-          />
+                    <input
+                      className="w-full hidden px-6 py-4 mt-5 text-sm font-medium placeholder-gray-500  bg-neutral-200  border border-gray-200 rounded-lg focus:border-gray-400 focus:bg-white custom-outline-none"
+                      type="text"
+                      value={"tutor"}
+                      {...register("roll")}
+                    />
                     <input
                       className="w-full px-6 py-4 mt-5 text-sm font-medium shadow-lg placeholder-gray-500  bg-neutral-200  focus:ring-teal-500 focus:border-teal-500 border-gray-200 rounded-lg  focus:bg-white custom-outline-none"
                       type="text"
@@ -111,7 +109,12 @@ const TutorRegister = () => {
                     />
                   </form>
                   <p className="mt-6 text-xs text-center text-gray-600">
-                    <Link to={'login'}><span>Allready have an account <span className="underline text-green-500">Login</span></span></Link>
+                    <Link to={"login"}>
+                      <span>
+                        Allready have an account{" "}
+                        <span className="underline text-green-500">Login</span>
+                      </span>
+                    </Link>
                   </p>
                 </div>
               </div>
