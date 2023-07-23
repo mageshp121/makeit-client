@@ -1,18 +1,37 @@
 import React, { useEffect, useState } from "react";
-import { getAllCourses_by_tutorId } from "../../utils/api/methods/get";
-import { Link } from "react-router-dom";
+// import { useAllCourses_by_tutorId } from "../../utils/api/methods/get";
+import { Link, useNavigate } from "react-router-dom";
+import { axiosPrivet } from "../../utils/api/baseUrl/axios.baseUrl";
+import { FetchCourseData_With_TutorId } from "../../utils/api/endPoints/commen";
+import { useAxiosePrivate } from "../../utils/customHooks/hook";
+// import { useAxiosePrivate } from "../../utils/customHooks/hook";
 
      function Course() {
     const [courseData,setCourseData] = useState([]);
-    const fn = async ()=>{
-      const courseRes:any = await getAllCourses_by_tutorId();
-      setCourseData(courseRes.data);
-      console.log(courseData,'course data');
-      console.log(courseRes,'course responseeeeee');
-      return courseData
-    }
+    const axiosPrivet = useAxiosePrivate()
+    const navigate = useNavigate()
     useEffect(()=>{
-     fn();  
+      let  isMounted:boolean = true;
+      const controler = new AbortController()
+      const fn = async ()=>{
+        // const courseRes:any = await useAllCourses_by_tutorId(controler);
+        const tutorId = "64acf4006742357551e55edd";
+        try {
+          const courseRes = await axiosPrivet.get(FetchCourseData_With_TutorId+tutorId,{
+               signal:controler.signal
+          });
+          isMounted  && setCourseData(courseRes.data);
+        } catch (error) {
+          navigate("/tutor/login")
+          console.log(error);
+        }
+      }
+     fn();
+     return ()=>{
+      isMounted = false
+      controler.abort();
+     }
+     
     },[])
     if(courseData){
       console.log(courseData,'course data');

@@ -1,5 +1,5 @@
-import { createSlice,PayloadAction } from "@reduxjs/toolkit";
-import { lessone, lessoneDataOrder } from "../../types/types";
+import { createSlice} from "@reduxjs/toolkit";
+
 
 
 

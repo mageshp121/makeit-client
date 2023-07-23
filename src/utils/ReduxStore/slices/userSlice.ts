@@ -10,10 +10,13 @@ const userSlice = createSlice({
              state.userData = {...state.userData,...action.payload}
              console.log(state.userData,'state.user user added');
         },
+        clearUser:(state)=>{
+            state.userData={}
+        },
         getUser:()=>{},
         updateUser:()=>{}
     }
 
 })
-export const { addUser,getUser,updateUser } = userSlice.actions
+export const { addUser,getUser,updateUser,clearUser } = userSlice.actions
 export default userSlice.reducer; 

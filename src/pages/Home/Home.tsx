@@ -9,7 +9,7 @@ function Home() {
     <>
      <Navbar/>
      <HomeNabBottom/>
-    <div className=' w-full shadow-2xl flex gap-5 mt-3 h-64 p-5'  >
+    <div className='w-full shadow-2xl flex gap-5 mt-3 h-64 p-5'  >
       <div className="w-[25%] flex-auto ">
         <div className='flex justify-end pl-8 pt-12'>
         <img className='animate-bounce ' src="/footer-shape-2.png" alt="" />
@@ -24,7 +24,7 @@ function Home() {
         </div>
       </div>   
     </div>
-    <div className="bg-white py-24 sm:py-10">
+    <div className=" py-24 sm:py-10">
       <div className="mx-auto max-w-7xl px-6 lg:px-8">
         <CardUpper/>
         <div className='w-[100%] overflow-auto h-[95rem]'>

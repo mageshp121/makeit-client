@@ -14,14 +14,12 @@ import { ErrorComponent } from '../components/ErrorComponents/ErrorComponent';
 function UserRouter() {
   return (
     <Routes>
-      <Route path="auth/*" element={
-            <Auth/>
-        }>
+      <Route path="auth/*" element={<Auth/>}>
         <Route index element={<Register />} />
-        <Route path='login' element={<Login/>}/>
+        <Route path='login'element={<Login/>}/>
         <Route path='otp' element={<OTP/>}/>
         <Route path='*' element={<ErrorComponent data={{path:'/auth',Message:'Sorry the provided url is not valied'}} />}/>
-        </Route>
+      </Route>
       <Route path="/" element={<ProtectedRoute path="/" element={<Home/>} />}/>
    </Routes>
   )

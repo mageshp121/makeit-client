@@ -20,25 +20,25 @@ export const LoginFn = async (data:object)=>{
 }
 
 
-export const CreateCourse = async(data:object)=>{
-  console.log(data);
-      try{
-        return client().post(Create_Course_Api,data,{ headers:{ 'Content-Type': 'multipart/form-data' }})
-      }catch(error){
-         return error
-      }
-}
+// export const CreateCourse = async(data:object)=>{
+//   console.log(data);
+//       try{
+//         return client().post(Create_Course_Api,data,{ headers:{ 'Content-Type': 'multipart/form-data' }})
+//       }catch(error){
+//          return error
+//       }
+// }
 
 
 
-export const Create_lessone =async(data:object)=>{
-    console.log(data, ' <= api create lessone methode =>');
-    try{
-     return client().post(Create_lessoneApi,data,{ headers:{ 'Content-Type': 'multipart/form-data'}})
-    }catch(error){
-      console.log(error,'errorororo');
+// export const Create_lessone =async(data:object)=>{
+//     console.log(data, ' <= api create lessone methode =>');
+//     try{
+//      return client().post(Create_lessoneApi,data,{ headers:{ 'Content-Type': 'multipart/form-data'}})
+//     }catch(error){
+//       console.log(error,'errorororo');
       
-      return error
-    }
+//       return error
+//     }
     
-}
+// }
