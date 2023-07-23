@@ -76,8 +76,9 @@ export const getUserByEmail =async(email:string)=>{
 }
 
 export const getRefreshToken = async (token:string) =>{
+  console.log(token,'tokennnn');
   const headers = {
-        'authorization': `Bearer ${token}`,
+        'Authorization': `Bearer ${token}`,
         'Content-Type': 'application/json',
       }
       try {

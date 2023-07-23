@@ -4,15 +4,18 @@ import {
   useCourseBasicValidate,
 } from "../../../utils/formvalidations/TurtorCourse/courseBasic";
 import FormEror from "../../ErrorComponents/FormEror";
-import { CreateCourse } from "../../../utils/api/methods/post";
 import { useDispatch } from "react-redux";
 import { addCourse } from "../../../utils/ReduxStore/slices/courseSlice";
 import { useNavigate } from "react-router-dom";
+import { useAxiosePrivate } from "../../../utils/customHooks/hook";
+import { Create_Course_Api } from "../../../utils/api/endPoints/commen";
+import { UseCommenError } from "../../../utils/toastify/toasty";
 
 const CourseBasicForm = () => {
   const { errors, handleSubmit, register } = useCourseBasicValidate();
   const dispatch = useDispatch()
-  const Navigate = useNavigate()
+  const navigate = useNavigate()
+  const axiosPrivet = useAxiosePrivate();
   const formSubmit = async (Data: CourseUpload) => {
     console.log(Data,'Form dataa');
     const formData = new FormData();
@@ -30,10 +33,18 @@ const CourseBasicForm = () => {
     formData.append('prerequesties2',Data.prerequesties2);
     formData.append('ThumbnailImage',Data.ThumbnailImage[0]);
     console.log(formData,'formDatatttttt');
-    const response:any = await CreateCourse(formData);
-    console.log(response.data);
-    dispatch(addCourse(response.data._id));
-    Navigate('/tutor/profile/courselesson')
+    try {
+      const response:any = await axiosPrivet.post(Create_Course_Api,formData,{headers:{'Content-Type': 'multipart/form-data'}})
+      console.log(response,'response');
+      console.log(response.data);
+      dispatch(addCourse(response.data._id));
+      navigate('/tutor/profile/courselesson')
+    } catch (error:any) {
+       if(error?.response?.status === 400){
+        UseCommenError("please logi")
+        navigate('/tutor/login') 
+       } 
+    }
   };
   return (
     <>

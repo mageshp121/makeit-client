@@ -15,6 +15,9 @@ import { addtoken } from "../ReduxStore/slices/tokenSlice";
 import { axiosPrivet } from "../api/baseUrl/axios.baseUrl";
 import { useEffect } from "react";
 import { any, promise } from "zod";
+import client from "../api/baseUrl/axios.baseUrl";
+import { getRefersh } from "../api/endPoints/commen";
+
 
 // This hook joins the object of strings and convertes into number
 export const useConvertString = (data: object) => {
@@ -93,16 +96,27 @@ export const useGoogleSignIn = async (auth: Auth): Promise<any> => {
 // custom hook for getting newaccess token using refresh token
 export const useRefreshToken = () => {
   const dispatch = useDispatch();
-  const accesToken = useSelector((store: any) => store.token.token);
-  console.log(accesToken, "<=  accesstoken token from token slice => ");
+  // const accesToken = useSelector((store: any) => store.token.token);
+  // console.log(accesToken, "<=  accesstoken token from token slice => ");
   const refreshtoken: any = localStorage.getItem("Token");
   console.log(refreshtoken, '<= localStorage.getItem("Token") =>');
   const refresh = async () => {
+    console.log('caling refers ap[iiiiii');
     // calling an api for getting new refersh token
-    const responase: any = await getRefreshToken(refreshtoken);
+    const headers = {
+      'authorization': `Bearer ${refreshtoken}`,
+      'Content-Type': 'application/json',
+    }
+    try {
+    const responase: any = await client().get(getRefersh,{headers});
     console.log(responase, "<= getRefreshToken(refreshtoken) api =>");
     dispatch(addtoken(responase.data));
     return responase.data;
+    } catch (error) {
+      console.log(error,'errrrrrrrr');
+      
+    }
+    
   };
   return refresh;
 };
@@ -114,13 +128,15 @@ export const useAxiosePrivate = () => {
     const requestIntercept = axiosPrivet.interceptors.request.use(
       (config) => {
         console.log("requsrr inter");
-
         if (!config.headers["Authorization"]) {
           config.headers["Authorization"] = `Bearer ${accesToken}`;
+          config.headers["Content-Type"] = 'multipart/form-data'
         }
         return config;
       },
-      (error) => Promise.reject(error)
+    (error) =>{ 
+        Promise.reject(error)
+      }
     );
 
     const responaseIntercept = axiosPrivet.interceptors.response.use(
@@ -130,7 +146,9 @@ export const useAxiosePrivate = () => {
         if (error?.response?.status === 403 && !prevRequest?.sent) {
           prevRequest.sent = true;
           const newAccessToken = await refersh();
+          console.log(newAccessToken,'accccccesss tokennnnn');
           prevRequest.headers["Authorization"] = `Bearer ${newAccessToken}`;
+          prevRequest.headers["Content-Type"] = 'multipart/form-data'
           return axiosPrivet(prevRequest);
         }
         return Promise.reject(error);
