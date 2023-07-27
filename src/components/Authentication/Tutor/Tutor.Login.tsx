@@ -3,7 +3,7 @@ import { LoginFn } from "../../../utils/api/methods/post";
 import {
   useValidate,
   LoginFormData,
-} from "../../../utils/formvalidations/login";
+} from "../../../utils/formvalidations/Common/login";
 import FormEror from "../../ErrorComponents/FormEror";
 import { useState } from "react";
 import { ErrorComponent } from "../../ErrorComponents/ErrorComponent";
@@ -100,7 +100,7 @@ function TutorLogin() {
           </div>
           <div className=" lg:w-1/2 xl:w-5/12 p-14 ">
             <div className="flex flex-col items-center mt-4">
-              <h3 className="text-xl font-medium pb-8 xl:text-3xl">Sign up</h3>
+              <h3 className="text-xl font-medium pb-8 xl:text-3xl">Sign </h3>
               <div className="flex-1 w-full ">
                 <div className="flex flex-col items-center">
                   <button
@@ -127,13 +127,13 @@ function TutorLogin() {
                         />
                       </svg>
                     </div>
-                    <span className="ml-4">Sign Up with Google</span>
+                    <span className="ml-4">Sign in with Google</span>
                   </button>
                 </div>
 
-                <div className="my-10 text-center border-b">
+                <div className="my-10 text-center pb-3 border-b">
                   <div className="inline-block  text-sm font-medium leading-none tracking-wide text-gray-600 transform translate-y-1/2 ">
-                    Or sign up with e-mail
+                    Or sign in with e-mail
                   </div>
                 </div>
                 <div className="max-w-xs mx-auto">

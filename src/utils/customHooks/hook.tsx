@@ -9,14 +9,13 @@ import { Otpfomevalue } from "../types/types";
 import { RecaptchaVerifier, UserCredential } from "firebase/auth";
 import { provider } from "../config/firebase";
 import { useSelector } from "react-redux";
-import { getRefreshToken } from "../api/methods/get";
 import { useDispatch } from "react-redux";
 import { addtoken } from "../ReduxStore/slices/tokenSlice";
 import { axiosPrivet } from "../api/baseUrl/axios.baseUrl";
 import { useEffect } from "react";
-import { any, promise } from "zod";
 import client from "../api/baseUrl/axios.baseUrl";
 import { getRefersh } from "../api/endPoints/commen";
+
 
 
 // This hook joins the object of strings and convertes into number
@@ -31,6 +30,8 @@ export const useSendOtp = (
   number: string,
   appVerifier: ApplicationVerifier
 ) => {
+  console.log(typeof(number));
+  console.log(number,'number');
   signInWithPhoneNumber(auth, number, appVerifier)
     .then((confirmationResult) => {
       window.confirmationResult = confirmationResult;
@@ -42,6 +43,8 @@ export const useSendOtp = (
       );
     });
 };
+
+
 
 export const UsegenerateRecaptcha = (auth: Auth) => {
   window.recaptchaVerifier = new RecaptchaVerifier(
@@ -93,6 +96,7 @@ export const useGoogleSignIn = async (auth: Auth): Promise<any> => {
   });
 };
 
+
 // custom hook for getting newaccess token using refresh token
 export const useRefreshToken = () => {
   const dispatch = useDispatch();
@@ -121,6 +125,8 @@ export const useRefreshToken = () => {
   return refresh;
 };
 
+
+// axios intercepter hook
 export const useAxiosePrivate = () => {
   const refersh = useRefreshToken();
   const accesToken = useSelector((store: any) => store.token.token);
@@ -130,7 +136,6 @@ export const useAxiosePrivate = () => {
         console.log("requsrr inter");
         if (!config.headers["Authorization"]) {
           config.headers["Authorization"] = `Bearer ${accesToken}`;
-          config.headers["Content-Type"] = 'multipart/form-data'
         }
         return config;
       },
@@ -148,7 +153,7 @@ export const useAxiosePrivate = () => {
           const newAccessToken = await refersh();
           console.log(newAccessToken,'accccccesss tokennnnn');
           prevRequest.headers["Authorization"] = `Bearer ${newAccessToken}`;
-          prevRequest.headers["Content-Type"] = 'multipart/form-data'
+          prevRequest.headers["Content-Type"] = "multipart/form-data";
           return axiosPrivet(prevRequest);
         }
         return Promise.reject(error);
@@ -162,3 +167,29 @@ export const useAxiosePrivate = () => {
 
   return axiosPrivet;
 };
+
+
+
+// course publish hook
+// export const usePublilsh =()=>{
+//   const couseId = useSelector((store: CourseId) => store.course?.courseData);
+//   const courseid = [...couseId];
+//   const navigate = useNavigate();
+//   const dispatch = useDispatch();
+//   const axiosPrivet = useAxiosePrivate();
+//     const publishCourse = async (id:string) => {
+//     try {
+//       const response = await axiosPrivet.patch(Publish_Cours+id);
+//       if (!response) {
+//         UseSomthingWentWrong();
+//       } else {
+//         dispatch(clearCourse());
+//         dispatch(clearLesson());
+//         navigate("/tutor/profile");
+//       }
+//     } catch (error) {
+//       UseSomthingWentWrong();
+//     }
+//   };
+//   return publishCourse
+// }

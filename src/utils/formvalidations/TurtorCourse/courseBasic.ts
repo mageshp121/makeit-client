@@ -12,7 +12,6 @@ export type CourseUpload = {
   WhatWilllearn4: string;
   CoursePrice: string;
   ThumbnailImage?:any;
-  ThumbnailVideo?:any;
   Description: string;
   ShortDescription: string;
   prerequesties1: string;
@@ -68,15 +67,6 @@ const schema: ZodType<CourseUpload> = z.object({
     }, 
     `Only .jpg, .jpeg, .png and .webp formats are supported.`
   ),
-  // ThumbnailVideo:z
-  // .any()
-  // .refine(
-  //   (file) => {
-  //     const ACCEPTED_VIDEO_TYPES = ['video/mp4', 'video/mpeg', 'video/webm']; // Add other accepted video MIME types if needed
-  //     return ACCEPTED_VIDEO_TYPES.includes(file[0]?.type);
-  //   },
-  //   'Only .mp4, .mpeg, and .webm formats are supported for video thumbnails.'
-  // ),
   Description: z.string().min(50, {
     message: "Description must contain at least 50 characters",
   })

@@ -14,6 +14,7 @@ import { UsegenerateRecaptcha } from "../../../utils/customHooks/hook";
 import { useSelector } from "react-redux";
 import store from "../../../utils/ReduxStore/store/Store";
 import React from "react";
+import { number } from "zod";
 
 function OTP() {
   const [count, setCount] = useState(1);
@@ -21,10 +22,14 @@ function OTP() {
   const [seconds, setSeconds] = useState(30);
   const [userData, setUserData] = useState({}) as any;
   const [otpControler, setOtpControler] = useState(false);
+  const userdata:any = useSelector((store:any)=>{
+    return store.user.userData
+   })
   const Navigate = useNavigate();
   const isMountedRef = useRef(false);
 
-  const phoneNumber = "+918590628664";
+  const phoneNumber = userdata.phone
+  const number =  "+91" +phoneNumber.toString() 
   const { register, control, handleSubmit } = useForm<Otpfomevalue>();
   const resendOTP = () => {
     isMountedRef.current = false;
@@ -43,7 +48,7 @@ function OTP() {
       console.log("useEffect calling ");
       if (window.recaptchaVerifier) {
         let appVerifier = window.recaptchaVerifier;
-        useSendOtp(authentication, phoneNumber, appVerifier);
+        useSendOtp(authentication, number, appVerifier);
       }
       isMountedRef.current = true;
     }
@@ -78,8 +83,6 @@ function OTP() {
           if (response.sucess) Navigate("/");
         })
         .catch((err) => {
-          console.log("err cathced ", err);
-          UseCommen("Invalid OTP Please check the OTP");
         });
     } else {
       useOtpSubmit("otp already submited please wait a second");

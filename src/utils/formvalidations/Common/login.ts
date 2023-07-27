@@ -20,7 +20,4 @@ export const useValidate = () => {
     errors
   }
 }
-// export const formSubmit = (data: LoginFormData) => {
-//   //  write the post method here for sending from data to the server
-//   console.log("working fine", data);
-// };
+

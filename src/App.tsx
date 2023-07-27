@@ -2,7 +2,7 @@ import { Route, Routes} from "react-router-dom";
 import Eor from "./pages/Error/Eor";
 import UserRouter from "./Routes/UserRouter";
 import TutorRouter from "./Routes/TutorRouter";
-
+import 'flowbite';
 
 
 function App() {

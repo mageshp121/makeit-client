@@ -35,7 +35,6 @@ import { useEffect, useState } from "react";
 
 const SingleCourseView =   () => { 
 const param:any = useParams();
-console.log(param.id,'param');
 const [lessone,setLessone] = useState() as any
 const [course, setCourse] = useState() as any
 useEffect(()=>{
@@ -263,15 +262,24 @@ useEffect(()=>{
           <div className="w-[1000] mb-1 flex-2 rounded-md    bg-slate-300 h-[15rem]">
             <img
               className="w-full rounded-md   h-full object-cover"
-              src="/icvgops1gqcosgv3dxde.jpg"
+              src={course?.data.thumbNailImageS3UrlKey}
               alt="course image"
             />
           </div>
           <div className="w-[1000] p-5 flex  justify-between flex-2 h-[5rem]">
-            <span className="text-2xl text-teal-600">₹ 1000</span>
-            <span className="inline-flex items-center hover:shadow-md rounded-md bg-green-50 px-2 py-1 text-xs font-medium text-green-700 ring-1 ring-inset ring-green-600/20">
+            <span className="text-2xl text-teal-600"> {course?.data.CoursePrice}</span>
+            {
+             course?.data.CoursePrice ? (
+              <span className="inline-flex items-center hover:shadow-md rounded-md bg-red-300 px-2 py-1 text-xs font-medium text-red-700 ring-1 ring-inset ring-green-600/20">
+             Drafted
+            </span>
+             ) :(
+              <span className="inline-flex items-center hover:shadow-md rounded-md bg-green-50 px-2 py-1 text-xs font-medium text-green-700 ring-1 ring-inset ring-green-600/20">
               Course Active
             </span>
+             )
+            }
+            
           </div>
         </div>
         <div className="w-[1000] grid grid-rows-4  border border-[#d7d5d1] shadow-md p-5 gap-3 flex-2 rounded-md bg-[#f3f2f0] h-[15rem]">

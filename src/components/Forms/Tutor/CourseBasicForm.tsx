@@ -10,9 +10,14 @@ import { useNavigate } from "react-router-dom";
 import { useAxiosePrivate } from "../../../utils/customHooks/hook";
 import { Create_Course_Api } from "../../../utils/api/endPoints/commen";
 import { UseCommenError } from "../../../utils/toastify/toasty";
+import { useSelector } from "react-redux";
 
 const CourseBasicForm = () => {
   const { errors, handleSubmit, register } = useCourseBasicValidate();
+  const userdata:any = useSelector((store:any)=>{
+   return store.user.userData
+  })
+
   const dispatch = useDispatch()
   const navigate = useNavigate()
   const axiosPrivet = useAxiosePrivate();
@@ -32,6 +37,7 @@ const CourseBasicForm = () => {
     formData.append('prerequesties1',Data.prerequesties1);
     formData.append('prerequesties2',Data.prerequesties2);
     formData.append('ThumbnailImage',Data.ThumbnailImage[0]);
+    formData.append('tutorId',userdata._id)
     console.log(formData,'formDatatttttt');
     try {
       const response:any = await axiosPrivet.post(Create_Course_Api,formData,{headers:{'Content-Type': 'multipart/form-data'}})

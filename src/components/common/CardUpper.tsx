@@ -1,3 +1,4 @@
+import { Link } from "react-router-dom";
 
 
 const  CardUpper = () => {
@@ -12,9 +13,11 @@ const  CardUpper = () => {
         </h2>
         <div className=" h-24  pt-7">
           <div>
+            <Link to={ "/single" }>
             <span className="pt-3 pl-6 cursor-pointer text-white h-12 flex gap-4 w-44 ju bg-teal-600  shadow-2xl hover:scale-105    font-medium rounded-lg text-sm px-5 py-2.5 text-center mr-2 mb-2">
               View More Courses
             </span>
+            </Link>
           </div>
         </div>
       </div>

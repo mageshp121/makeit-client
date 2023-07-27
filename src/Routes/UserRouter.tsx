@@ -9,6 +9,13 @@ import Home from '../pages/Home/Home'
 import OTP from '../components/Authentication/User/Otp'
 import Auth from '../pages/Auth/Auth'
 import { ErrorComponent } from '../components/ErrorComponents/ErrorComponent';
+import SingleCourseView from '../components/Course/SingleCourseView.tutor'
+import SingleCourse from '../pages/course/SingleCourse'
+import UserProfile from '../pages/ProfilepageTutor/UserProfile'
+import PurchasedCourses from '../components/useProfileRelsted/PurchasedCourses'
+import ProfileUpdate from '../components/Forms/Common/ProfileUpdate'
+import ProfileImageUpdate from '../components/Forms/User/ProfileImageUpdate'
+import { PurchaseHistory } from '../components/useProfileRelsted/PurchaseHistory'
 
 
 function UserRouter() {
@@ -21,6 +28,13 @@ function UserRouter() {
         <Route path='*' element={<ErrorComponent data={{path:'/auth',Message:'Sorry the provided url is not valied'}} />}/>
       </Route>
       <Route path="/" element={<ProtectedRoute path="/" element={<Home/>} />}/>
+      <Route path="/single" element={<SingleCourse/>}/>
+      <Route path='/profile' element={<UserProfile/>}>
+      <Route index  element={<PurchasedCourses/>} />
+      <Route path='profilebasic'  element={<ProfileUpdate/>} />
+      <Route path='profileimage'  element={<ProfileImageUpdate/>} />
+      <Route path='purchasehistory'  element={<PurchaseHistory/>} />
+      </Route>
    </Routes>
   )
 }
