@@ -6,9 +6,6 @@ import 'flowbite';
 
 
 function App() {
- 
-  
-  
   return (
     <div className="bg-[#f3f2f0]">
     <Routes>

@@ -1,5 +1,3 @@
-import  { useState } from "react";
-import "flowbite";
 import { Link } from "react-router-dom";
 import { usersProp } from "../../utils/types/types";
 
@@ -7,7 +5,7 @@ function Navbar({users}:{users:usersProp}) {
   
   return (
     <>
-    <nav className="bg-white fixed  right-0 left-0  shadow-2xl border-gray-200  dark:bg-gray-900">
+    <nav className="bg-white p-0 fixed  right-0 left-0  shadow-xl border-gray-200  dark:bg-gray-900">
         <div className="max-w-screen-xl  flex flex-wrap items-center justify-between mx-auto p-4">
           <a href="" className="  flex items-center">
             <img

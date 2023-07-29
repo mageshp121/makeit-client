@@ -10,18 +10,6 @@ import {
   getRefersh
 } from "../endPoints/commen";
 
-// export const useAllCourses_by_tutorId = async (controler:any) => {
-//   const tutorId = "64acf4006742357551e55edd";
-//   const axiosPrivet = useAxiosePrivate()
-//   // try {
-//   //   const data = await axiosPrivet.get(FetchCourseData_With_TutorId + tutorId,{
-//   //        signal:controler.signal
-//   //   });
-//   //   return data;
-//   // } catch (error) {
-//   //   return error;
-//   // }
-// };
 
 export const courseLessone = async (id: string) => {
     console.log(id,'iddddddd');

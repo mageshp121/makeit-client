@@ -8,7 +8,7 @@ export type ProfileUpdation = {
   firstName:string
   lastName:string
   email:string
-  ProfileImage?:any
+  userimage?:any
 }
 
 const ACCEPTED_IMAGE_TYPES = ["image/jpeg", "image/jpg", " image/png", "image/webp"];
@@ -34,7 +34,7 @@ export const profileUpdateSchema  : ZodType<ProfileUpdation> = z.object({
         message: "Please provide a valid email address",
       }),
 
-      ProfileImage: z
+      userimage: z
       .any()
       .refine(
         (file) =>{

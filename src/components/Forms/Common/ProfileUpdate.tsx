@@ -1,20 +1,95 @@
+import { useDispatch } from "react-redux";
+import { getUserById, udpdateuser } from "../../../utils/api/endPoints/commen";
 import { useAxiosePrivate } from "../../../utils/customHooks/hook";
-import { useProfileUpdateValidate } from "../../../utils/formvalidations/Common/profileedit";
+import { ProfileUpdation, useProfileUpdateValidate } from "../../../utils/formvalidations/Common/profileedit";
 import { useSelector } from "react-redux";
+import { addUser } from "../../../utils/ReduxStore/slices/userSlice";
+import { useEffect, useState } from "react";
+import { Navigate, useNavigate } from "react-router-dom";
+import { UseCommen, UseCommenError } from "../../../utils/toastify/toasty";
+
+
+
+
+export interface userData {
+  _id:string
+  firstName : string,
+  lastName: string,
+  email:string,
+  phone:number,
+  password:string,
+  roll:string
+  isOtPVerified:boolean | null
+  profileImage:string 
+  s3ImageUrl:string 
+}
+
+
+
 
 const ProfileUpdate = () => {
   const { errors, handleSubmit, register } = useProfileUpdateValidate();
-  const axiosPrivet =  useAxiosePrivate()
-  const userdata: any = useSelector((store: any) => {
+  const dispatch = useDispatch()
+  const axiosPrivet =  useAxiosePrivate();
+  const [update,setUpdate] = useState(false)
+  const navigat = useNavigate()
+  const [userdata, setUserData] = useState<userData>({
+    _id:"",
+    firstName: "",
+    lastName: "",
+    email: "",
+    phone: 0,
+    password: "",
+    roll: "",
+    isOtPVerified:false,
+    profileImage: ""  ,
+     s3ImageUrl: "",
+  });
+
+  const user: any = useSelector((store: any) => {
     return store.user.userData;
   });
-  const formsubmit = async (Data: any) => {
-    console.log(handleSubmit);
-    console.log(Data, "<= profileUpdateSubmit =>");
-    console.log("hdasdhasdhsajkhdjashdkjsahdkjshjk");
-    
-    
+  
+    useEffect(()=>{
+    const getuser = async()=>{
+      try {
+        const useRes =  await axiosPrivet.get(getUserById+user._id);
+        setUserData(useRes.data);
+        dispatch(addUser(useRes.data))
+      } catch (error) {
+        navigat('/auth/login')
+      }
+     
+    }
+    getuser()
+    },[update])
 
+  const formsubmit = async (Data:ProfileUpdation) => {
+    console.log(Data, "<= profileUpdateSubmit Sumbmited data =>");
+    const formData = new FormData();
+    formData.append("firstName",Data.firstName);
+    formData.append("lastName",Data.lastName);
+    formData.append("email",Data.email);
+    formData.append("userimage",Data.userimage[0]);
+    formData.append("profileImage",userdata.profileImage);
+    formData.append("_id",userdata._id);
+    for (const entry of formData.entries()) {
+      console.log(entry);
+    }
+    try {
+      const response = await axiosPrivet.put(udpdateuser,formData,{headers:{'Content-Type': 'multipart/form-data'}});
+      console.log(response,'<= ProfileUpdate  axiosPrivet.patch  =>');
+      if(response.data._id){
+        setUpdate(true)
+        UseCommen("profile succesfull updated")
+      }else{
+        UseCommenError("Something went wrong try agin")
+      }
+    } catch (error) {
+      console.log(error,'errororororo');
+      
+    }
+   
   };
   return (
     <>
@@ -81,7 +156,7 @@ const ProfileUpdate = () => {
                   </label>
                   {/* {errors?.ProfileImage && <p>{errors?.ProfileImage?.message}</p>} */}
                   <input
-                    {...register("ProfileImage")}
+                    {...register("userimage")}
                     className="block w-full text-sm  bg-slate-50 text-gray-900 border border-gray-300 rounded-lg cursor-pointer  dark:text-gray-400 focus:outline-none dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400"
                     aria-describedby="user_avatar_help"
                     id="user_avatar"
@@ -95,7 +170,7 @@ const ProfileUpdate = () => {
                     You'r previous profile image
                   </label>
                   <div className="w-60 overflow-hidden rounded-lg object-contain ">
-                    <img className="h-60 w-60" src="/images (2).jpeg" alt="" />
+                    <img className="h-60 w-60" src={`${userdata?.s3ImageUrl}`} alt="profile Image" />
                   </div>
                 </div>
               </div>

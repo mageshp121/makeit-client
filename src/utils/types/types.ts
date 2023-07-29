@@ -120,6 +120,8 @@ export type usersProp =  {
   password:string;
   roll:string;
   otpVerify:boolean
+  profileImage:string
+  s3ImageUrl:string
 } 
 
 

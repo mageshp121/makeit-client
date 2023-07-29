@@ -133,6 +133,8 @@ export const useAxiosePrivate = () => {
   useEffect(() => {
     const requestIntercept = axiosPrivet.interceptors.request.use(
       (config) => {
+        console.log(accesToken,'acceeeeeeeeee');
+        
         console.log("requsrr inter");
         if (!config.headers["Authorization"]) {
           config.headers["Authorization"] = `Bearer ${accesToken}`;

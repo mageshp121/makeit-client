@@ -1,11 +1,9 @@
-import React from 'react'
 import Navbar from '../../components/Navabar/Navbar'
 import HomeNabBottom from '../../components/NavBottom/HomeNabBottom'
 import CourseCard from '../../components/Course/CourseCard'
 import CardUpper from '../../components/common/CardUpper'
 import SectionDownCourse from '../../components/common/SectionDownCourse'
 import SectionDown4 from '../../components/common/SectionDown4'
-import { useLocation } from 'react-router-dom'
 import { usersProp } from '../../utils/types/types'
 import { useSelector } from 'react-redux'
 
@@ -13,13 +11,11 @@ function Home() {
   const userdata:usersProp = useSelector((store:any)=>{
     return store.user.userData
    })
-  console.log(location,'locationnnn');
-  
   return (
     <>
      <Navbar users={userdata}/>
      <HomeNabBottom/>
-    <div className='w-full shadow-2xl flex gap-5 mt-3 h-64 p-5'  >
+     <div className='w-full shadow-2xl flex gap-5 mt-3 h-64 p-5'  >
       <div className="w-[25%] flex-auto ">
         <div className='flex justify-end pl-8 pt-12'>
         <img className='animate-bounce ' src="/footer-shape-2.png" alt="" />

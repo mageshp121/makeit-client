@@ -1,9 +1,7 @@
-import React from "react";
-import { useLocation, useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import { usersProp } from "../../utils/types/types";
 
 function NavSmall({users}:{users:usersProp}) {
-  const location = useLocation();
   const navigate = useNavigate();
   const handleGoBack = () => {
     navigate(-1);
@@ -15,7 +13,7 @@ function NavSmall({users}:{users:usersProp}) {
         <div className="ml-9">
           <span
             onClick={handleGoBack}
-            className=" rounded-full bg-teal-600 px-3.5 py-1 text-sm font-semibold text-white shadow-sm hover:bg-gray-700 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-gray-900"
+            className=" rounded-full cursor-pointer bg-teal-600 px-3.5 py-1 text-sm font-semibold text-white shadow-sm hover:bg-gray-700 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-gray-900"
           >
             <span aria-hidden="true">←</span> Back
           </span>
@@ -27,7 +25,6 @@ function NavSmall({users}:{users:usersProp}) {
         </div>
            </> )
         }
-       
       </div>
     </div>
   );

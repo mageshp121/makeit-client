@@ -1,198 +1,291 @@
 import React, { useEffect, useState } from "react";
-import CourseCard from "./CourseCard";
-import CardUpper from "../common/CardUpper";
+
 // import SingleCourseHome from './SingleCourseHome'
 import { getAllCourses } from "../../utils/api/methods/get";
 import Shimmer from "../common/Shimmer";
 
 export default function SingleCourseViewUser() {
-  const [sample, setSample] = useState(10);
-  // console.log(prop,'propsssss');
+  const [isLoading, setIsLoading] = useState(true); 
+  const [coursedata, setCoursesData] = useState([]) as any;
+  const [filteringData, setFilteringData] = useState([]) as any;
+  const [search, setSearch] = useState<string>("");
+  const [selectedCategory, setSelectedCategory] = useState<string>("");
+  const [minPriceFilter, setMinPriceFilter] = useState<string>("");
+  const [maxPriceFilter, setMaxPriceFilter] = useState<string>("");
+  const [sortOrder, setSortOrder] = useState<string>("");
+  const [currentPage, setCurrentPage] = useState(1);
+  const [searcheror, setSearchError] = useState<string>("");
+  const [priceerror, setPriceError] = useState<string>("");
+  const [totalPage, setTotalPages] = useState(1);
 
-  const [courses, setCourses] = useState([]) as any;
+
+  const recordperPage = 6
+  const lastIndex = currentPage * recordperPage ;
+  const firstIndex = lastIndex - recordperPage  ; 
+
+
+
+
+
+
+
+
+
+
+  // This useEffect() is fetching the data from server
   useEffect(() => {
+    console.log("fetch use effetctctctctctctc");
     const fetData = async () => {
-      const course: any = await getAllCourses();
-      console.log(course.data);
-      setCourses(course.data.slice(0, 6));
+      const response: any = await getAllCourses();
+      console.log(response.data);
+      setCoursesData(response.data);
+      setFilteringData(response.data);
+      setIsLoading(false);
     };
     fetData();
   }, []);
 
+  const isValidNumeric = (value: string) => {
+    return /^[0-9]+$/.test(value);
+  };
+
+  const isValidAlphabetic = (value: string) => {
+    return /^[a-zA-Z]+$/.test(value);
+  };
+
+  // handle event changing for filtering data
+  const handleCategoryChange = (
+    event: React.ChangeEvent<HTMLSelectElement>
+  ) => {
+    setSelectedCategory(event.target.value); 
+    console.log(event.target.value, "<= handleCategoryChange =>");
+    setCurrentPage(1);
+  };
+
+  const handleMinPriceChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    setMinPriceFilter(event.target.value);
+    console.log(event.target.value, "<= handleMinPriceChange =>");
+    setCurrentPage(1);
+  };
+
+  const handleMaxPriceChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    setMaxPriceFilter(event.target.value);
+    console.log(event.target.value, "<= handleMaxPriceChange =>");
+    setCurrentPage(1);
+  };
+
+  const handleSortChange = (event: React.ChangeEvent<HTMLSelectElement>) => {
+    setSortOrder(event.target.value as "asc" | "desc");
+    console.log(event.target.value, "<= handleSortChange =>");
+    setCurrentPage(1);
+  };
+  const handleSearch = (event: React.ChangeEvent<HTMLInputElement>) => {
+    if (!isValidAlphabetic(event.target.value)) {
+      setSearchError("The provided value to search shulde be in Alphebetic");
+      setSearch("");
+    } else {
+      setSearchError("");
+      setSearch(event.target.value);
+      console.log(event.target.value, "<= handleSortChange =>");
+      setCurrentPage(1);
+    }
+  };
+
+  const handleReset = () => {
+    setSelectedCategory("");
+    setMinPriceFilter("");
+    setMaxPriceFilter("");
+    setSortOrder("");
+    setSearch("");
+  };
+
+  useEffect(() => {
+    const filteredProducts = coursedata.filter((product: any) => {
+      console.log(product.WorkingTitle, "ggg");
+
+      const searchData =
+        search === "" ||
+        product.WorkingTitle.toLowerCase().includes(search.toLowerCase());
+      console.log(searchData, "searchData");
+      const matchCategory =
+        selectedCategory.length === 0 ||
+        selectedCategory.includes(product.Category.toLowerCase());
+      const matchMinPrice =
+        minPriceFilter === "" ||
+        product.CoursePrice >= parseFloat(minPriceFilter);
+      const matchMaxPrice =
+        maxPriceFilter === "" ||
+        product.CoursePrice <= parseFloat(maxPriceFilter);
+      return matchCategory && matchMinPrice && matchMaxPrice && searchData;
+    });
+     setFilteringData(filteredProducts);
+    let sortedProducts = filteringData;
+    if (sortOrder !== undefined) {
+      sortedProducts = [...filteredProducts].sort((a, b) => {
+        if (sortOrder === "asc") {
+          return a.CoursePrice - b.CoursePrice;
+        } else {
+          return b.CoursePrice - a.CoursePrice;
+        }
+      });
+      setFilteringData(sortedProducts);
+    }
+    setPriceError("");
+    setSearchError("");
+  }, [selectedCategory, minPriceFilter, maxPriceFilter, sortOrder, search,currentPage]);
+  
+const page = Math.ceil(filteringData.length / recordperPage);
+const paginatedCourses = filteringData.slice(firstIndex, lastIndex);
+//  setFilteringData(...paginatedCourses)
+console.log(page,'hdsh');
+console.log(paginatedCourses,'paginatedCourses');
+
+const handlePageChange = (pageNumber:number) =>{
+     setCurrentPage(pageNumber)
+}
+const handlePrev=()=>{
+    if(currentPage != 1){
+        setCurrentPage((prev)=>prev-1)
+    }
+}
+   
+const handleNext = () =>{
+   setCurrentPage((prev)=> prev+1)
+}
+
+
   return (
     <>
-      <div className="w-[75.5rem] ml-[5.5rem] pt-7 p-5  rounded-lg  shadow-md mr-16 h-40 border border-slate-50 bg-white">
-        <div className="grid grid-cols-3 gap-48">
-          {/* search by course starts */}
+     
+      <div className="w-[75rem] ml-[6.4rem] pt-7 p-5 pb-8 rounded-lg  shadow-md mr-16 h-auto border border-slate-50 bg-white">
+        {/* search by course starts */}
 
+        <span className="p-5">
+          {(searcheror.length != 0 && (
+            <h1 className="text-red-600">{searcheror}</h1>
+          )) ||
+            (priceerror.length != 0 && (
+              <h1 className="text-red-600">{priceerror}</h1>
+            ))}
+        </span>
+        <div className="grid grid-cols-4 gap-10">
           <div>
             <h1 className="mb-3 ml-2 text-md">Search courses</h1>
-
-            <div className="relative max-w-xs">
+            <div className=" max-w-xs">
               <label htmlFor="hs-table-search" className="sr-only">
                 Search
               </label>
               <input
                 type="text"
-                name="hs-table-search"
+                value={search}
+                onChange={handleSearch}
                 id="hs-table-search"
                 className="p-3 pl-10 block w-full border-gray-200 rounded-lg text-sm focus:border-teal-500 focus:ring-teal-500 dark:bg-slate-900 dark:border-gray-700 dark:text-gray-400"
                 placeholder="Search for items"
               />
-              <div className="absolute inset-y-0 left-0 flex items-center pointer-events-none pl-4">
-                <svg
-                  className="h-3.5 w-3.5 text-gray-400"
-                  xmlns="http://www.w3.org/2000/svg"
-                  width={16}
-                  height={16}
-                  fill="currentColor"
-                  viewBox="0 0 16 16"
-                >
-                  <path d="M11.742 10.344a6.5 6.5 0 1 0-1.397 1.398h-.001c.03.04.062.078.098.115l3.85 3.85a1 1 0 0 0 1.415-1.414l-3.85-3.85a1.007 1.007 0 0 0-.115-.1zM12 6.5a5.5 5.5 0 1 1-11 0 5.5 5.5 0 0 1 11 0z" />
-                </svg>
-              </div>
             </div>
           </div>
 
           {/* search by course ends */}
 
-          {/* filter by category starts */}
-
-          <div>
-            <h1 className="mb-3 ml-2 text-md">Filter by category</h1>
-            <div className="hs-dropdown relative inline-flex [--strategy:absolute]">
-              <button
-                id="hs-dropdown-right-but-left-on-lg"
-                type="button"
-                className="hs-dropdown-toggle w-44  py-3  inline-flex justify-center items-center gap-2 rounded-md border font-medium bg-white text-gray-700 shadow-sm align-middle hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-offset-white focus:ring-teal-600 transition-all text-sm dark:bg-slate-900 dark:hover:bg-slate-800 dark:border-gray-700 dark:text-gray-400 dark:hover:text-white dark:focus:ring-offset-gray-800"
-              >
-                Select Category
-                <svg
-                  className="hs-dropdown-open:rotate-180 w-2.5 h-2.5 text-gray-600"
-                  width={16}
-                  height={16}
-                  viewBox="0 0 16 16"
-                  fill="none"
-                  xmlns="http://www.w3.org/2000/svg"
-                >
-                  <path
-                    d="M2 5L8.16086 10.6869C8.35239 10.8637 8.64761 10.8637 8.83914 10.6869L15 5"
-                    stroke="currentColor"
-                    strokeWidth={2}
-                    strokeLinecap="round"
-                  />
-                </svg>
-              </button>
-              <div
-                className="hs-dropdown-menu w-72 transition-[opacity,margin] duration hs-dropdown-open:opacity-100 opacity-0 hidden z-10 top-0 right-0 left-auto lg:right-auto lg:left-0 min-w-[16.5rem] bg-white shadow-md rounded-lg p-2 mt-2 dark:bg-gray-800 dark:border dark:border-gray-700 dark:divide-gray-700"
-                aria-labelledby="hs-dropdown-right-but-left-on-lg"
-              >
-                <a
-                  className="flex items-center gap-x-3.5 py-2 px-3 rounded-md text-sm text-gray-800 hover:bg-gray-100 focus:ring-2 focus:ring-blue-500 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-gray-300"
-                  href="#"
-                >
-                  Newsletter
-                </a>
-                <a
-                  className="flex items-center gap-x-3.5 py-2 px-3 rounded-md text-sm text-gray-800 hover:bg-gray-100 focus:ring-2 focus:ring-blue-500 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-gray-300"
-                  href="#"
-                >
-                  Purchases
-                </a>
-                <a
-                  className="flex items-center gap-x-3.5 py-2 px-3 rounded-md text-sm text-gray-800 hover:bg-gray-100 focus:ring-2 focus:ring-blue-500 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-gray-300"
-                  href="#"
-                >
-                  Downloads
-                </a>
-                <a
-                  className="flex items-center gap-x-3.5 py-2 px-3 rounded-md text-sm text-gray-800 hover:bg-gray-100 focus:ring-2 focus:ring-blue-500 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-gray-300"
-                  href="#"
-                >
-                  Team Account
-                </a>
+          {/* search by price range starts */}
+          <div className="ml-3">
+            <h1 className="mb-3 ml-2 text-md">Add price range</h1>
+            <div className=" max-w-xs">
+              <label htmlFor="hs-table-search" className="sr-only">
+                Search
+              </label>
+              <div className="flex justify-between gap-4">
+                <input
+                  type="text"
+                  value={minPriceFilter}
+                  onChange={handleMinPriceChange}
+                  name="hs-table-search"
+                  id="hs-table-search"
+                  className="p-3  block w-full border-gray-200 rounded-lg text-sm focus:border-teal-500 focus:ring-teal-500 dark:bg-slate-900 dark:border-gray-700 dark:text-gray-400"
+                  placeholder="Min"
+                />
+                <input
+                  type="text"
+                  name="hs-table-search"
+                  id="hs-table-search"
+                  value={maxPriceFilter}
+                  onChange={handleMaxPriceChange}
+                  className="p-3 block w-full border-gray-200 rounded-lg text-sm focus:border-teal-500 focus:ring-teal-500 dark:bg-slate-900 dark:border-gray-700 dark:text-gray-400"
+                  placeholder="Mix"
+                />
               </div>
             </div>
+          </div>
+          {/* search by price range ends */}
+
+          {/* filter by category starts */}
+          <div className="ml-10">
+            <h1 className="mb-3 ml-2 text-md">Filter by category</h1>
+            <select
+              value={selectedCategory}
+              onChange={handleCategoryChange}
+              className="py-3 px-4 pr-9 block w-full border-gray-200 rounded-md text-sm focus:border-teal-500 focus:ring-teal-500 dark:bg-whit bg-white dark:border-teal-700 dark:text-gray-400"
+            >
+              {/* Set the "selected" attribute to true for the default option */}
+              <option value="" selected>
+                Selecte the category
+              </option>
+              <option value="canada">Canada</option>
+              <option value="Option 2">Option 2</option>
+              <option value="Option 3">Option 3</option>
+            </select>
           </div>
           {/* filter by category ends */}
 
           {/* sort dropedown starts */}
-          <div>
-            <h1 className="mb-3 ml-2 text-md">Sort by price</h1>
-            <div className="hs-dropdown relative inline-flex [--strategy:absolute]">
-              <button
-                id="hs-dropdown-right-but-left-on-lg"
-                type="button"
-                className="hs-dropdown-toggle w-44  py-3  inline-flex justify-center items-center gap-2 rounded-md border font-medium bg-white text-gray-700 shadow-sm align-middle hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-offset-white focus:ring-teal-600 transition-all text-sm dark:bg-slate-900 dark:hover:bg-slate-800 dark:border-gray-700 dark:text-gray-400 dark:hover:text-white dark:focus:ring-offset-gray-800"
-              >
-                Select price range
-                <svg
-                  className="hs-dropdown-open:rotate-180 w-2.5 h-2.5 text-gray-600"
-                  width={16}
-                  height={16}
-                  viewBox="0 0 16 16"
-                  fill="none"
-                  xmlns="http://www.w3.org/2000/svg"
-                >
-                  <path
-                    d="M2 5L8.16086 10.6869C8.35239 10.8637 8.64761 10.8637 8.83914 10.6869L15 5"
-                    stroke="currentColor"
-                    strokeWidth={2}
-                    strokeLinecap="round"
-                  />
-                </svg>
-              </button>
-              <div
-                className="hs-dropdown-menu w-72 transition-[opacity,margin] duration hs-dropdown-open:opacity-100 opacity-0 hidden z-10 top-0 right-0 left-auto lg:right-auto lg:left-0 min-w-[16.5rem] bg-white shadow-md rounded-lg p-2 mt-2 dark:bg-gray-800 dark:border dark:border-gray-700 dark:divide-gray-700"
-                aria-labelledby="hs-dropdown-right-but-left-on-lg"
-              >
-                <a
-                  className="flex items-center gap-x-3.5 py-2 px-3 rounded-md text-sm text-gray-800 hover:bg-gray-100 focus:ring-2 focus:ring-blue-500 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-gray-300"
-                  href="#"
-                >
-                  Newsletter
-                </a>
-                <a
-                  className="flex items-center gap-x-3.5 py-2 px-3 rounded-md text-sm text-gray-800 hover:bg-gray-100 focus:ring-2 focus:ring-blue-500 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-gray-300"
-                  href="#"
-                >
-                  Purchases
-                </a>
-                <a
-                  className="flex items-center gap-x-3.5 py-2 px-3 rounded-md text-sm text-gray-800 hover:bg-gray-100 focus:ring-2 focus:ring-blue-500 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-gray-300"
-                  href="#"
-                >
-                  Downloads
-                </a>
-                <a
-                  className="flex items-center gap-x-3.5 py-2 px-3 rounded-md text-sm text-gray-800 hover:bg-gray-100 focus:ring-2 focus:ring-blue-500 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-gray-300"
-                  href="#"
-                >
-                  Team Account
-                </a>
-              </div>
-            </div>
+          <div className="ml-10">
+            <h1 className="mb-3 ml-2 text-md">Sort Data</h1>
+            <select
+              value={sortOrder}
+              onChange={handleSortChange}
+              className="py-3 px-4 pr-9 block w-full border-gray-200 rounded-md text-sm focus:border-teal-500 focus:ring-teal-500 dark:bg-white bg-white dark:border-teal-700 dark:text-gray-400"
+            >
+              {/* Set the "selected" attribute to true for the default option */}
+              <option className="bg-white mt-8" value="" selected>
+                Sort Data
+              </option>
+              <option value="asc">Min to Max</option>
+              <option value="desc">Max to Min</option>
+            </select>
           </div>
           {/* sort dropedown end */}
 
           {/* card starts */}
-          <div>
-            <h1 className="mb-3 ml-1 text-md">Sort by Price</h1>
-          </div>
         </div>
+        {search !== "" ||
+        selectedCategory !== "" ||
+        minPriceFilter !== "" ||
+        maxPriceFilter !== "" ||
+        sortOrder !== "" ? (
+          <button
+            onClick={handleReset}
+            type="button"
+            className="py-3 px-4 mt-5 w-32 inline-flex justify-center items-center gap-2 rounded-md border border-transparent font-semibold bg-teal-500 text-white hover:bg-teal-600 focus:outline-none focus:ring-2 focus:ring-teal-500 focus:ring-offset-2 transition-all text-sm dark:focus:ring-offset-gray-800"
+          >
+            Clear
+          </button>
+        ) : null}
       </div>
-      <div className="flex justify-between"></div>
-      <div className="w-[100%]   ">
+      <div className="w-[100%]  overflow-auto  mt-2 h-[69rem] ">
         <div className="mx-auto  max-w-7xl px-6 lg:px-8">
           <div className="w-[100%]  ">
             <div className="mt-4  ">
               <div className="mx-auto sm:grid-cols-4  grid max-w-2xl grid-cols-1  gap-x-8 gap-y-16 pt-5  lg:mx-0 lg:max-w-none lg:grid-cols-3">
-                {courses?.length !== 0 ? (
-                  courses?.map((course: any) => (
+                {
+                isLoading ? (
+                  <Shimmer /> // Show Shimmer while loading 
+                ) :paginatedCourses?.length !== 0 ? (
+                  paginatedCourses?.map((course: any, key: any) => (
                     <>
-                      <div className="p-2 h-[25rem] ">
+                      <div className="p-2 h-[25rem] " key={key}>
                         <img
-                          src="/icvgops1gqcosgv3dxde.jpg"
+                          src={`${course.thumbNailImageS3UrlKey}`}
                           alt=""
                           className="h-[50px] rounded-lg w-full object-cover sm:h-[200px]"
                         />
@@ -200,17 +293,17 @@ export default function SingleCourseViewUser() {
                           <div>
                             <div className="mt-2">
                               <span className="text-gray-900 text-lg group-hover:underline group-hover:underline-offset-4">
-                                Small Headphones
+                                {course.WorkingTitle}
                               </span>
                             </div>
                             <div className=" ">
                               <p className="mt-1.5 max-w-[45ch] text-md text-gray-500">
-                                Lorem ipsum dolor sit amet consectetur
-                                adipisicing elit. Quasi nobis, quia soluta
-                                quisquam voluptatem nemo.
+                                {course.ShortDescription}
                               </p>
                               <div className="mt-3">
-                                <p className="text-teal-600 text-lg">₹ 299</p>
+                                <p className="text-teal-600 text-lg">
+                                  ₹ {course.CoursePrice}
+                                </p>
                               </div>
                             </div>
                           </div>
@@ -235,51 +328,52 @@ export default function SingleCourseViewUser() {
                     </>
                   ))
                 ) : (
-                  <Shimmer />
+
+
+                  <div className="w-full ml-[26rem] text-center">
+                    <h1 className="text-4xl">No data found</h1>
+                  </div>
+
+
+                  
                 )}
                 {/* card ends */}
 
-                {/* paginatio bar starts */}
-
-                <div className="w-[75rem] ml-3 rounded-lg  mr-16 h-20">
+                
+              </div>
+              {/* paginatio bar starts */}
+              <div className="w-[75rem] mt-14 ml-3 rounded-lg  mr-16 h-20">
                   <nav className="flex justify-center  bg-white items-center rounded-lg  space-x-2">
-                    <a
-                      className="text-gray-500 hover:text-blue-600 p-4 inline-flex items-center gap-2 rounded-md"
-                      href="#"
-                    >
+                    <span
+                      className="text-gray-500 hover:text-teal-600 p-4 inline-flex items-center gap-2 rounded-md"
+                         onClick={handlePrev}
+                       >
                       <span aria-hidden="true">«</span>
                       <span className="sr-only">Previous</span>
-                    </a>
-                    <a
-                      className="w-10 h-10 bg-teal-600 text-white p-4 inline-flex items-center text-sm font-medium rounded-full"
-                      href="#"
-                      aria-current="page"
-                    >
-                      1
-                    </a>
-                    <a
-                      className="w-10 h-10 text-gray-500 hover:text-blue-600 p-4 inline-flex items-center text-sm font-medium rounded-full"
-                      href="#"
-                    >
-                      2
-                    </a>
-                    <a
-                      className="w-10 h-10 text-gray-500 hover:text-blue-600 p-4 inline-flex items-center text-sm font-medium rounded-full"
-                      href="#"
-                    >
-                      3
-                    </a>
-                    <a
-                      className="text-gray-500 hover:text-blue-600 p-4 inline-flex items-center gap-2 rounded-md"
-                      href="#"
+                    </span>
+                  {Array.from({ length: page }, (_, index) => (
+                 <span
+                key={index + 1}
+                 className={`w-10 h-10 ${
+                currentPage === index + 1
+                  ? "bg-teal-600 text-white"
+                  : "text-gray-500 hover:text-teal-600"
+                 } p-4 inline-flex items-center text-sm font-medium rounded-full`}
+                 onClick={() => handlePageChange(index + 1)}
+                  >
+                    {index+1 }
+                 </span>
+                    ))}
+                    <span
+                      className="text-gray-500 hover:text-teal-600 p-4 inline-flex items-center gap-2 rounded-md"
+                      onClick={handleNext}
                     >
                       <span className="sr-only">Next</span>
                       <span aria-hidden="true">»</span>
-                    </a>
+                    </span>
                   </nav>
                 </div>
                 {/* paginatio bar end */}
-              </div>
             </div>
           </div>
         </div>
