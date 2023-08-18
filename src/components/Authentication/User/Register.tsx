@@ -1,7 +1,7 @@
 import {
   useRegisterValidate,
   RegisterFormData,
-} from "../../../utils/formvalidations/register";
+} from "../../../utils/formvalidations/Common/register";
 import "react-toastify/dist/ReactToastify.css";
 import { Link, useNavigate } from "react-router-dom";
 import { RegisterFn } from "../../../utils/api/methods/post";

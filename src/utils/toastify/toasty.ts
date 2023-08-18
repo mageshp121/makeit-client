@@ -26,6 +26,7 @@ export const UseSomthingWentWrong = () => {
   });
 };
 
+
 export const useOtpSubmit = (msg: string) => {
   return toast.error(msg, {
     position: "top-center",

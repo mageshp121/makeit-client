@@ -1,4 +1,3 @@
-import React from "react";
 
 function HomeNabBottom() {
   return (
@@ -60,7 +59,7 @@ function HomeNabBottom() {
               </div>
             </div>
             <div className=" h-[20%]  w-[100%] flex ">
-              <div className="flex-auto shape-1 animate-off-on ">
+              <div className="flex-auto  shape-1 animate-off-on">
                 <img src="/shape-2.svg" alt="" />
               </div>
               <img src="/shape-3 (1).svg" alt="" />

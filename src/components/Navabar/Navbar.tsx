@@ -1,12 +1,14 @@
-import  { useState } from "react";
-import "flowbite";
 import { Link } from "react-router-dom";
+import { usersProp } from "../../utils/types/types";
+import mixpanel from "mixpanel-browser";
 
-function Navbar() {
-  const [sign] = useState(true);
+function Navbar({users}:{users:usersProp}) {
+  const catchEvent=()=>{
+    mixpanel.track("Clicked course Search")
+  }
   return (
     <>
-    <nav className="bg-white fixed  right-0 left-0  shadow-2xl border-gray-200  dark:bg-gray-900">
+    <nav className="bg-white p-0  fixed  right-0 left-0  shadow-xl border-gray-200  dark:bg-gray-900">
         <div className="max-w-screen-xl  flex flex-wrap items-center justify-between mx-auto p-4">
           <a href="" className="  flex items-center">
             <img
@@ -35,80 +37,77 @@ function Navbar() {
               </svg>
               <span className="sr-only">Search icon</span>
             </div>
+            <Link to={"/single"}>
             <input
               type="text"
+              onClick={
+                catchEvent
+              }
               id="search-navbar"
-              className="block w-full shadow-xl p-2 pl-10 text-sm text-gray-900 border border-gray-300 rounded-lg bg-gray-50 focus:ring-teal-500 focus:border-teal-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-teal-500 dark:focus:border-teal-500"
+              className="block w-[30rem] shadow-xl p-2 pl-10 text-sm text-gray-900 border border-gray-300 rounded-lg bg-gray-50 focus:ring-teal-500 focus:border-teal-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-teal-500 dark:focus:border-teal-500"
               placeholder="Search Courses"
             />
+            </Link>
           </div>
+          
           <div className="flex items-center  md:order-2">
-            {sign ? (
-              <button
-                type="button"
-                className="flex  mr-3 text-sm bg-gray-800 rounded-full md:mr-0 focus:ring-4 focus:ring-gray-300 dark:focus:ring-gray-600"
-                id="user-menu-button"
-                aria-expanded="false"
-                data-dropdown-toggle="user-dropdown"
-                data-dropdown-placement="bottom"
-              >
-                <span className="sr-only">Open user menu</span>
-                <img
-                  className="w-8 h-8  rounded-full"
-                  src="/images (2).jpeg"
-                  alt="user photo"
-                />
-              </button>
-            ) : (
-              <span>sign in</span>
-            )}
-            <div
-              className="z-50 hidden my-4 text-base list-none bg-white divide-y divide-gray-100 rounded-lg  dark:bg-gray-700 dark:divide-gray-600"
-              id="user-dropdown"
-            >
-              <div className="px-4 py-3">
-                <span className="block text-sm text-gray-900 dark:text-white">
-                  Bonnie Green
-                </span>
-                <span className="block text-sm  text-gray-500 truncate dark:text-gray-400">
-                Bonnie Greene@gmail.com
-                </span>
+            {users?._id ? (
+              <>
+              <div className="hs-dropdown rounded-full overflow-hidden relative inline-flex">
+                <button
+                  id="hs-dropdown-with-dividers"
+                  type="button"
+                  className="hs-dropdown-toggle  inline-flex justify-center items-center gap-2 rounded-md border font-medium bg-white text-gray-700 shadow-sm align-middle hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-offset-white focus:ring-blue-600 transition-all text-sm dark:bg-slate-900 dark:hover:bg-slate-800 dark:border-gray-700 dark:text-gray-400 dark:hover:text-white dark:focus:ring-offset-gray-800"
+                >
+                 <img className="h-10 w-10 object-fill"  src={`${users.s3ImageUrl}`} alt=" profile image " />
+                </button>
+                <div
+                  className="hs-dropdown-menu hidden shadow-lg transition-[opacity,margin] duration hs-dropdown-open:opacity-100 opacity-0 min-w-[15rem] bg-white border-gray-500  rounded-lg p-2 mt-2 divide-y divide-gray-200 dark:bg-gray-800 dark:border dark:border-gray-700 dark:divide-gray-700"
+                  aria-labelledby="hs-dropdown-with-dividers"
+                >
+                  <div className="py-2 first:pt-0 last:pb-0">
+                    <a
+                      className="flex items-center gap-x-3.5 py-2 px-3 rounded-md text-sm text-gray-800 hover:bg-gray-100 focus:ring-2 focus:ring-blue-500 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-gray-300"
+                      href="#"
+                    >
+                     My Learnings
+                    </a>
+                  </div>
+                 
+                  <div className="py-2 first:pt-0 last:pb-0">
+                    <Link to={'/profile'}
+                      className="flex items-center gap-x-3.5 py-2 px-3 rounded-md text-sm text-gray-800 hover:bg-gray-100 focus:ring-2 focus:ring-blue-500 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-gray-300"
+                      
+                    >
+                      Account 
+                    </Link>
+                    <a
+                      className="flex items-center gap-x-3.5 py-2 px-3 rounded-md text-sm text-gray-800 hover:bg-gray-100 focus:ring-2 focus:ring-blue-500 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-gray-300"
+                      href="#"
+                    >
+                      Sign out
+                    </a>
+                  </div>
+                </div>
               </div>
-              <ul className="py-2" aria-labelledby="user-menu-button">
-                <li>
-                  <a
-                    href="#"
-                    className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 dark:hover:bg-gray-600 dark:text-gray-200 dark:hover:text-white"
-                  >
-                    Dashboard
-                  </a>
-                </li>
-                <li>
-                  <a
-                    href="#"
-                    className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 dark:hover:bg-gray-600 dark:text-gray-200 dark:hover:text-white"
-                  >
-                    Settings
-                  </a>
-                </li>
-                <li>
-                  <a
-                    href="#"
-                    className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 dark:hover:bg-gray-600 dark:text-gray-200 dark:hover:text-white"
-                  >
-                    Earnings
-                  </a>
-                </li>
-                <li>
-                  <a
-                    href="#"
-                    className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 dark:hover:bg-gray-600 dark:text-gray-200 dark:hover:text-white"
-                  >
-                    Sign out
-                  </a>
-                </li>
-              </ul>
-            </div>
+            </>
+            
+            ) : (
+              <>
+              <Link to={"/auth/login"}>
+              
+               <div className="">
+             <span
+        
+            className="rounded-full  bg-teal-600 px-3.5 py-1 text-sm font-semibold text-white shadow-sm hover:bg-gray-700 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-gray-900"
+          >
+            <span aria-hidden="true">Sign in    →</span>
+          </span>
+        </div>
+        </Link>
+              </>
+             
+            )}
             <button
               data-collapse-toggle="mobile-menu-2"
               type="button"
@@ -136,7 +135,7 @@ function Navbar() {
             className="items-center justify-between hidden w-full md:flex md:w-auto md:order-1"
             id="mobile-menu-2"
           >
-            <ul className="flex flex-col font-medium p-4 md:p-0 mt-4 border border-gray-100 rounded-lg bg-gray-50 md:flex-row md:space-x-8 md:mt-0 md:border-0 md:bg-white dark:bg-gray-800 md:dark:bg-gray-900 dark:border-gray-700">
+            <ul className="flex flex-col font-medium p-1 md:p-0 mt-4 border border-gray-100 rounded-lg bg-gray-50 md:flex-row md:space-x-8 md:mt-0 md:border-0 md:bg-white dark:bg-gray-800 md:dark:bg-gray-900 dark:border-gray-700">
               <li>
                 <a
                   href="#"
@@ -154,16 +153,19 @@ function Navbar() {
                   Courses
                 </a>
               </li>
-              <li>
-                {/* <a
-                  href="#"
-                  className="block py-2 pl-3 pr-4 text-gray-900 rounded hover:bg-gray-100 md:hover:bg-transparent md:hover:text-teal-500 md:p-0 dark:text-white md:dark:hover:text-teal-500 dark:hover:bg-gray-700 dark:hover:text-white md:dark:hover:bg-transparent dark:border-gray-700"
-                >
-                  Become An instructor
-                </a> */}
+              <li> 
                 <Link to={'/tutor'}> <span className="block py-2 pl-3 pr-4 text-gray-900 rounded hover:bg-gray-100 md:hover:bg-transparent md:hover:text-teal-500 md:p-0 dark:text-white md:dark:hover:text-teal-500 dark:hover:bg-gray-700 dark:hover:text-white md:dark:hover:bg-transparent dark:border-gray-700"> Become An instructor</span></Link>
               </li>
+              <li className="">
+              </li>
             </ul>
+            {
+              users._id && <Link to={`/cart/${users._id}`}>
+              <div className="ml-4">
+              <img className="h-12" src="/wired-outline-146-basket-trolley-shopping-card.gif" alt="" />
+              </div>
+              </Link>
+            }
           </div>
         </div>
       </nav>

@@ -6,8 +6,7 @@ import { Outlet } from 'react-router-dom'
 function TutorAuth() {
   return (
     <>
-    <Navbar />
-    <Navbottom Title={"Authenticaton"} subTitle={'create your tutor account'} />
+    <Navbottom Title={"Authentication"} subTitle={'create your tutor account'} />
     <Outlet/>
     </>
   )

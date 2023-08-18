@@ -9,15 +9,20 @@ import {
 } from "../../../utils/toastify/toasty";
 import { useNavigate } from "react-router-dom";
 import { UsegenerateRecaptcha } from "../../../utils/customHooks/hook";
+import { useSelector } from "react-redux";
 
 function TutorOtp() {
   const [count, setCount] = useState(1);
   const [minutes, setMinutes] = useState(1);
   const [seconds, setSeconds] = useState(30);
   const [otpControler, setOtpControler] = useState(false);
+  const userdata:any = useSelector((store:any)=>{
+    return store.user.userData
+   })
   const Navigate = useNavigate();
   const isMountedRef = useRef(false);
-  const phoneNumber = "+918590628664";
+  const phoneNumber = userdata.phone
+  const number =  "+91" +phoneNumber.toString() 
   const { register, control, handleSubmit } = useForm<Otpfomevalue>();
 
   const resendOTP = () => {
@@ -37,7 +42,7 @@ function TutorOtp() {
        console.log("useEffect calling ");
        if (window.recaptchaVerifier) {
          let appVerifier = window.recaptchaVerifier;
-         useSendOtp(authentication, phoneNumber, appVerifier);
+         useSendOtp(authentication, number, appVerifier);
        }
        isMountedRef.current = true;
      }

@@ -1,7 +1,7 @@
 
 import { Link, Navigate, useNavigate } from "react-router-dom";
 import { LoginFn } from "../../../utils/api/methods/post";
-import { useValidate, LoginFormData} from "../../../utils/formvalidations/login";
+import { useValidate, LoginFormData} from "../../../utils/formvalidations/Common/login";
 import FormEror from "../../ErrorComponents/FormEror";
 import { useState } from "react";
 import { ErrorComponent } from "../../ErrorComponents/ErrorComponent";
@@ -119,13 +119,13 @@ function Login() {
                 />
               </svg>
             </div>
-            <span className="ml-4">Sign Up with Google</span>
+            <span className="ml-4">Sign in with Google</span>
           </button>
         </div>
 
         <div className="my-10 text-center border-b">
           <div className="inline-block  text-sm font-medium leading-none tracking-wide text-gray-600 transform translate-y-1/2 ">
-            Or sign up with e-mail
+            Or sign in with e-mail
           </div>
         </div>
         <div className="max-w-xs mx-auto">

@@ -46,6 +46,7 @@ function LessoneForm() {
 
   const fromSubmit = async (data: any) => {
     if (control === 0) {
+      setControl(1)
       if (couseId.length > 0) {
         const formData:FormData = new FormData();
         formData.append("lessoneContent", data.lessoneContent[0]);
@@ -53,7 +54,7 @@ function LessoneForm() {
         formData.append("lessoneOrder", lessones);
         formData.append("tutorId", "64acf4006742357551e55edd");
         formData.append("courseId", courseid[0]);
-        const response: any = await axiosPrivet.post(Create_lessoneApi,formData)
+        const response: any = await axiosPrivet.post(Create_lessoneApi,formData,{headers:{'Content-Type': 'multipart/form-data'}})
         if (response.data) {
           dispatch(addLessone());
           setControl(0);
@@ -67,7 +68,7 @@ function LessoneForm() {
         setErrorMessage(message);
       }
     } else {
-      UseCommen("please wait course is adding ");
+      UseCommenError("please wait course is adding ");
     }
   };
 
@@ -78,10 +79,10 @@ function LessoneForm() {
     navigate("/tutor/profile");
   };
 
-  // publising the course
+  //publising the course
   const publishCourse = async () => {
     try {
-      const response = await axiosPrivet.patch(Publish_Cours+courseid[0]);
+      const response = await axiosPrivet.patch(Publish_Cours+courseid[0],{headers:{'Content-Type': 'multipart/form-data'}});
       if (!response) {
         UseSomthingWentWrong();
       } else {

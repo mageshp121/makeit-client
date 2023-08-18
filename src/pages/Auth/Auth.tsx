@@ -11,8 +11,7 @@ import { Outlet } from "react-router-dom";
 const AuthPage = () => {
   return (
     <>
-    <Navbar />
-    <Navbottom Title={"Authenticaton"} subTitle={'create your acoount'} />
+    <Navbottom Title={"Authenticaton"} subTitle={'create your acoount'} /> 
     <Outlet/>
     </>
   );

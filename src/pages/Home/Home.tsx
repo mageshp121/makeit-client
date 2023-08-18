@@ -1,15 +1,31 @@
-import React from 'react'
 import Navbar from '../../components/Navabar/Navbar'
 import HomeNabBottom from '../../components/NavBottom/HomeNabBottom'
 import CourseCard from '../../components/Course/CourseCard'
 import CardUpper from '../../components/common/CardUpper'
+import SectionDownCourse from '../../components/common/SectionDownCourse'
+import SectionDown4 from '../../components/common/SectionDown4'
+import { usersProp } from '../../utils/types/types'
+import { useSelector } from 'react-redux'
+import mixpanel from 'mixpanel-browser'
+import Chat from '../../components/Chat/Chat'
+
 
 function Home() {
+  const userdata:usersProp = useSelector((store:any)=>{
+    return store.user.userData
+   })
+   if(userdata._id){
+      mixpanel.track("User landed home afted authentication");
+   }else{
+      mixpanel.track('Landing page');
+   }
+
   return (
     <>
-     <Navbar/>
+    <Chat/>
+     <Navbar users={userdata}/>
      <HomeNabBottom/>
-    <div className='w-full shadow-2xl flex gap-5 mt-3 h-64 p-5'  >
+     <div className='w-full shadow-2xl flex gap-5 mt-3 h-64 p-5'  >
       <div className="w-[25%] flex-auto ">
         <div className='flex justify-end pl-8 pt-12'>
         <img className='animate-bounce ' src="/footer-shape-2.png" alt="" />
@@ -27,13 +43,17 @@ function Home() {
     <div className=" py-24 sm:py-10">
       <div className="mx-auto max-w-7xl px-6 lg:px-8">
         <CardUpper/>
-        <div className='w-[100%] overflow-auto h-[95rem]'>
+        <div className='w-[100%] mt-32 border-t border-gray-200  h-[44rem]'>
            <CourseCard/>
         </div>
       </div>
+      <div className='mt-3'>
+        <SectionDownCourse/>
+      </div>
+      <div className='mt-5'>
+        <SectionDown4/>
+      </div>
     </div>
-    
-  
     
     </>
    

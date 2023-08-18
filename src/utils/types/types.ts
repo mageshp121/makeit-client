@@ -1,5 +1,5 @@
 import { RecaptchaVerifier } from "firebase/auth";
-import { RegisterFormData } from "../formvalidations/register";
+import { RegisterFormData } from "../formvalidations/Common/register";
 import { FieldErrors } from "react-hook-form";
 
 export type Otpfomevalue = {
@@ -110,3 +110,18 @@ export interface googleData{
   userEmail: string | null
   userProfileImageGooleUrl : string | null
 }
+
+export type usersProp =  {
+  _id:string;
+  firstName:string;
+  lastName:string;
+  email:string;
+  phone:number;
+  password:string;
+  roll:string;
+  otpVerify:boolean
+  profileImage:string
+  s3ImageUrl:string
+} 
+
+
