@@ -2,23 +2,74 @@ import { useEffect, useState } from "react";
 import Tutordetails from "./Tutordetails";
 import { getAllCourses } from "../../utils/api/methods/get";
 import Shimmer from "../common/Shimmer";
+import { useSelector } from "react-redux";
+import { usersProp } from "../../utils/types/types";
+import { Cart_Api } from "../../utils/api/endPoints/commen";
+import { UseCommen, UseCommenError } from "../../utils/toastify/toasty";
+import { useNavigate } from "react-router-dom";
+import { useAxiosePrivate } from "../../utils/customHooks/hook";
+
+
 
 const CourseCard =  ()  => {
-
-  const [courses, setCourses] = useState([]) as any;
+  const userdata:usersProp = useSelector((store:any)=>{
+    return store.user.userData
+   })
+  const [courses, setCourses] = useState([]) ;
+  const navigate = useNavigate()
+  const axiosPrivet = useAxiosePrivate()
   useEffect(() => {
     const fetData = async () => {
       const course: any = await getAllCourses();
-      console.log(course.data);
-      setCourses(course.data.slice(0,3));
+      console.log(course.data,'jkjk');
+      if(course?.data?.length > 0  ){
+        console.log("ok working");
+        setCourses(course.data.slice(0,6));
+        console.log(courses,'dsdsds');
+      }else{
+       
+      }
+      
     };
     fetData();
   }, []);
-  return (
+
+
+
+
+  const handleAddtocart= async (courseId:string)=>{
+    if(userdata._id){
+      const requestData = {
+        userId: userdata._id,
+        cartProductId: courseId,
+      };
+      try {
+        const response = await axiosPrivet.post(Cart_Api,requestData,{headers:{'Content-Type': 'application/json'}});
+       console.log(response,'<= handleAddtocart =>');
+      if(response.data.created || response.data.updated){
+         return UseCommen("Corse added into cart")
+      }else if(response.data.ProductPresent){
+         UseCommenError("Sorry the Course is already present in the cart");
+         return navigate(`/cart/${userdata._id}`)
+      }else{
+      }
+      } catch (error) {
+        return console.log(error,'errororor');
+      }
+      
+    }else{
+      navigate("/auth/login")
+    }
+   }
+console.log(courses.length,'lengthhhh');
+
+
+
+ return (
     <div className="mt-4 overflow-auto h-[44rem]">
       <div className="mx-auto sm:grid-cols-4  grid max-w-2xl grid-cols-1 overflow-auto gap-x-8 gap-y-16 pt-5  lg:mx-0 lg:max-w-none lg:grid-cols-3">
-        {courses?.length !== 0 ? (
-          courses?.map((course: any) => (
+        {courses.length > 0 ? (
+          courses.map((course: any) => (
             <article
               key={course?._id}
               className="flex max-w-xl  flex-col items-start justify-between"
@@ -63,8 +114,8 @@ const CourseCard =  ()  => {
               </div>
               <div className="w-[100%] flex mt-5 ">
                 <div className="w-[70%]">
-                  <button className="hover:shadow-2xl bg-teal-600 items-center justify-center w-full py-4 font-semibold tracking-wide text-gray-100 rounded-lg">
-                    Enroll now
+                  <button onClick={()=>handleAddtocart(course._id)} className="hover:shadow-2xl bg-teal-600 items-center justify-center w-full py-4 font-semibold tracking-wide text-gray-100 rounded-lg">
+                  <span className="pr-2">✚</span> Add to Cart
                   </button>
                 </div>
                 <div className="w-[20%] h-14 ml-9 rounded-lg pl-3 border shadow-md border-gray-400">

@@ -3,6 +3,13 @@ import React, { useEffect, useState } from "react";
 // import SingleCourseHome from './SingleCourseHome'
 import { getAllCourses } from "../../utils/api/methods/get";
 import Shimmer from "../common/Shimmer";
+// import { useAddTocart } from "../../utils/customHooks/hook";
+import { useSelector } from "react-redux";
+import { usersProp } from "../../utils/types/types";
+import { useAxiosePrivate } from "../../utils/customHooks/hook";
+import { useNavigate } from "react-router-dom";
+import { Cart_Api } from "../../utils/api/endPoints/commen";
+import { UseCommen, UseCommenError } from "../../utils/toastify/toasty";
 
 export default function SingleCourseViewUser() {
   const [isLoading, setIsLoading] = useState(true); 
@@ -16,21 +23,15 @@ export default function SingleCourseViewUser() {
   const [currentPage, setCurrentPage] = useState(1);
   const [searcheror, setSearchError] = useState<string>("");
   const [priceerror, setPriceError] = useState<string>("");
-  const [totalPage, setTotalPages] = useState(1);
-
+  const axiosPrivet = useAxiosePrivate()
+  const navigate = useNavigate()
+  const userdata:usersProp = useSelector((store:any)=>{
+    return store.user.userData
+   })
 
   const recordperPage = 6
   const lastIndex = currentPage * recordperPage ;
   const firstIndex = lastIndex - recordperPage  ; 
-
-
-
-
-
-
-
-
-
 
   // This useEffect() is fetching the data from server
   useEffect(() => {
@@ -38,16 +39,13 @@ export default function SingleCourseViewUser() {
     const fetData = async () => {
       const response: any = await getAllCourses();
       console.log(response.data);
-      setCoursesData(response.data);
-      setFilteringData(response.data);
+      const resPublishedData = response.data.filter((item:any) => item.drafted === false)
+      setCoursesData(resPublishedData);
+      setFilteringData(resPublishedData);
       setIsLoading(false);
     };
     fetData();
   }, []);
-
-  const isValidNumeric = (value: string) => {
-    return /^[0-9]+$/.test(value);
-  };
 
   const isValidAlphabetic = (value: string) => {
     return /^[a-zA-Z]+$/.test(value);
@@ -134,12 +132,14 @@ export default function SingleCourseViewUser() {
     setSearchError("");
   }, [selectedCategory, minPriceFilter, maxPriceFilter, sortOrder, search,currentPage]);
   
-const page = Math.ceil(filteringData.length / recordperPage);
-const paginatedCourses = filteringData.slice(firstIndex, lastIndex);
+  const page = Math.ceil(filteringData.length / recordperPage);
+  let paginatedCourses = filteringData.slice(firstIndex, lastIndex);
 //  setFilteringData(...paginatedCourses)
 console.log(page,'hdsh');
 console.log(paginatedCourses,'paginatedCourses');
-
+if(!paginatedCourses){
+  paginatedCourses=[]
+}
 const handlePageChange = (pageNumber:number) =>{
      setCurrentPage(pageNumber)
 }
@@ -150,9 +150,37 @@ const handlePrev=()=>{
 }
    
 const handleNext = () =>{
-   setCurrentPage((prev)=> prev+1)
+  if(page != currentPage){
+    setCurrentPage((prev)=> prev+1)
+  }
+   
 }
 
+
+
+ const handleAddtocart= async (courseId:string)=>{
+ if(userdata._id){
+   const requestData = {
+     userId: userdata._id,
+     cartProductId: courseId,
+   };
+   try {
+     const response = await axiosPrivet.post(Cart_Api,requestData,{headers:{'Content-Type': 'application/json'}});
+    console.log(response,'<= handleAddtocart =>');
+   if(response.data.created || response.data.updated){
+      return UseCommen("Corse added into cart")
+   }else if(response.data.ProductPresent){
+      UseCommenError("Sorry the Course is already present in the cart");
+      return navigate(`/cart/${userdata._id}`)
+   }else{
+   }
+   } catch (error) {
+     return console.log(error,'errororor');
+   }
+ }else{
+   navigate("/auth/login")
+ }
+}
 
   return (
     <>
@@ -280,7 +308,7 @@ const handleNext = () =>{
                 {
                 isLoading ? (
                   <Shimmer /> // Show Shimmer while loading 
-                ) :paginatedCourses?.length !== 0 ? (
+                ) :paginatedCourses?.length > 0 ? (
                   paginatedCourses?.map((course: any, key: any) => (
                     <>
                       <div className="p-2 h-[25rem] " key={key}>
@@ -310,8 +338,12 @@ const handleNext = () =>{
                         </div>
                         <div className="flex  justify-between w-full">
                           <div className="w-[100%] mt-5">
-                            <button className="hover:shadow-2xl bg-teal-600 items-center justify-center w-full py-4 font-semibold tracking-wide text-gray-100 rounded-lg">
-                              Enroll now
+                            <button onClick={()=>{
+                              console.log(course._id,'iddidididididid');
+                              
+                              handleAddtocart(course?._id)}
+                              } className="hover:shadow-2xl bg-teal-600 items-center justify-center w-full py-4 font-semibold tracking-wide text-gray-100 rounded-lg">
+                              Add to Cart 
                             </button>
                           </div>
                           <div className="w-[20%] h-13 ml-9 mt-5 pt-3 rounded-lg  border shadow-md border-gray-400">

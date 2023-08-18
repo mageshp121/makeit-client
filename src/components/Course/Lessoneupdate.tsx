@@ -7,10 +7,15 @@ import {
 import { useAxiosePrivate } from "../../utils/customHooks/hook";
 import { useCourselessoneValidate } from "../../utils/formvalidations/TurtorCourse/lessone";
 import { UseCommen, UseSomthingWentWrong } from "../../utils/toastify/toasty";
+import { useSelector } from "react-redux";
 
 const Lessoneupdate = () => {
+  const userdata:any = useSelector((store:any)=>{
+    return store.user.userData
+   })
+ 
     const closeButtonRef = useRef<HTMLButtonElement>(null);
-  const { id } = useParams();
+  const { id } :any = useParams();
   console.log(id,'idid');
   
   const axiosPrivet = useAxiosePrivate();
@@ -59,9 +64,6 @@ const Lessoneupdate = () => {
     console.log(data,'okooooo');
     console.log(lessons,'lessons');
     const lessonecopy:any = [...lessons];
-    console.log(lessonecopy,'copyyyyyyyyyy');
-    console.log(lessonecopy[0].tutorId,'lessonecopy[0].tutorId');
-    console.log(lessonecopy[0].courseId,'lessonecopy[0].courseId');
     const order = lessonecopy.length
     
     if (isadded) {
@@ -69,8 +71,8 @@ const Lessoneupdate = () => {
       formData.append("lessoneContent", data.lessoneContent[0]);
       formData.append("lessoneTitle", data.lessoneTitle);
       formData.append("lessoneOrder", order+1 );
-      formData.append("tutorId", lessonecopy[0].tutorId);
-      formData.append("courseId", lessonecopy[0].courseId);
+      formData.append("tutorId",userdata._id );
+      formData.append("courseId", id);
       console.log(data, "<= addnewLessone =>");
       setIsadded(false);
       const response: any = await axiosPrivet.post(

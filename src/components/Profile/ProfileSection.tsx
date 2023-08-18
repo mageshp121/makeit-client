@@ -21,8 +21,8 @@ function ProfileSection({users}:{users:usersProp}) {
     <>
       <div className={`flex rounded-2xl justify-center border w-80  bg-white hover:shadow-lg border-spacing-1   h-[${height}rem]`}>
         <div className="flex-row p-5 justify-center">
-          <div className=" shadow-lg ml-10 cursor-pointer w-40 h-40  border bg-black rounded-full  overflow-hidden">
-            <img className="" src={`${users?.s3ImageUrl}`} alt="" />
+          <div className=" shadow-lg ml-10 cursor-pointer w-40 h-40  border rounded-full  overflow-hidden">
+            <img className="" src={`${users?.s3ImageUrl}`}  />
           </div>
           <div className="flex  justify-center">
             <div className="mt-6 flex-row justify-center ">

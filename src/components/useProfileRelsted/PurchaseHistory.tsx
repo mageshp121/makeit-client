@@ -1,6 +1,28 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
+import { useSelector } from "react-redux";
+import { usersProp } from "../../utils/types/types";
+import { useAxiosePrivate } from "../../utils/customHooks/hook";
+import { GetPurhcaseHistoryUser_Api } from "../../utils/api/endPoints/commen";
+import { Link } from "react-router-dom";
 
 export const PurchaseHistory = () => {
+  const [purchaseHistory, setPurchaseHistory] = useState([]) as any;
+  const userdata: usersProp = useSelector((store: any) => {
+    return store.user.userData;
+  });
+  const axiosePrivate = useAxiosePrivate();
+  useEffect(() => {
+    const getPurchaseHistory = async () => {
+      const response: any = await axiosePrivate.get(
+        GetPurhcaseHistoryUser_Api + userdata._id
+      );
+      if (response.data) {
+        console.log(response.data, "ResponseDatatatta");
+        setPurchaseHistory(response.data);
+      }
+    };
+    getPurchaseHistory();
+  }, []);
   return (
     <>
       <div className="rounded-md">
@@ -14,10 +36,9 @@ export const PurchaseHistory = () => {
                 <div className="py-3 px-4">
                   <div className="mb-5">
                     <span className="inline-flex items-center gap-1.5 py-1.5 px-3 rounded-full text-xs font-medium bg-blue-100 text-blue-800">
-                      2 Courses
+                      {purchaseHistory.length} Courses
                     </span>
                   </div>
-
                   <div className="relative max-w-xs">
                     <label htmlFor="hs-table-search" className="sr-only">
                       Search
@@ -50,7 +71,7 @@ export const PurchaseHistory = () => {
                         <th scope="col" className="py-3 px-4 pr-0"></th>
                         <th
                           scope="col"
-                          className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase"
+                          className="px-16 py-6 text-left text-xs font-medium text-gray-500 uppercase"
                         >
                           Course Name
                         </th>
@@ -72,36 +93,60 @@ export const PurchaseHistory = () => {
                         >
                           Total Price
                         </th>
+                        <th></th>
                       </tr>
                     </thead>
                     <tbody className="divide-y divide-gray-200 dark:divide-gray-700">
-                      <tr className="hover:bg-slate-50">
-                        <td className="py-3 pl-4">
-                          <div className="flex items-center h-5">
-                            <img
-                              className="h-12"
-                              src="/wired-outline-146-basket-trolley-shopping-card.gif"
-                              alt=""
-                            />
-                          </div>
-                        </td>
-                        <td className="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-800 dark:text-gray-200">
-                          <div className="w-36 overflow-hidden">
-                            <span className="">MicroFront end</span>
-                          </div>
-                        </td>
-                        <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-800 dark:text-gray-200">
-                          <div className="w-36 overflow-hidden">
-                            <span className="">web develpemnt</span>
-                          </div>
-                        </td>
-                        <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-800 dark:text-gray-200">
-                          26-10-2023
-                        </td>
-                        <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-800 dark:text-gray-200">
-                          1500
-                        </td>
-                      </tr>
+                      {purchaseHistory.map((obj: any) => {
+                        const status = obj.status; // Replace this with the actual value of obj.status
+
+                        const statusDisplay =
+                          status === "Pending" ? (
+                            <span className="text-red-600">Pending</span>
+                          ) : status === "success" ? (
+                            <span className="text-green-400">Success</span>
+                          ) : (
+                            <span className="text-yellow-500">Failed</span>
+                          );
+                        return (
+                          <>
+                            <tr key={obj._id} className="hover:bg-slate-50">
+                              <td className="py-3 pl-4">
+                                <div className="flex items-center h-5">
+                                  <img
+                                    className="h-7 ml-7"
+                                    src="/wired-outline-146-basket-trolley-shopping-card.gif"
+                                    alt=""
+                                  />
+                                </div>
+                              </td>
+                              <td className="px-16    text-sm font-medium text-gray-800 dark:text-gray-200">
+                                <div className=" overflow-hidden">
+                                  <span className="">{obj.orderId}</span>
+                                </div>
+                              </td>
+                              <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-800 dark:text-gray-200">
+                                <div className=" overflow-hidden">
+                                  {statusDisplay}
+                                </div>
+                              </td>
+                              <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-800 dark:text-gray-200">
+                                {obj.date}
+                              </td>
+                              <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-800 dark:text-gray-200">
+                                {obj.totalemount}
+                              </td>
+                              <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-800 dark:text-gray-200">
+                                <Link to={"/"}>
+                                <span className=" rounded-lg  cursor-pointer  bg-teal-600 px-3.5 py-1 text-sm font-semibold text-white shadow-sm hover:bg-gray-700 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-gray-900">
+                                  <span className="text-sm" aria-hidden="true">courses</span>
+                                </span>
+                                </Link>
+                              </td>
+                            </tr>
+                          </>
+                        );
+                      })}
                     </tbody>
                   </table>
                 </div>

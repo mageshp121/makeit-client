@@ -3,34 +3,7 @@ import { courseLessone ,getCoursebyId } from "../../utils/api/methods/get";
 import { UseCommen } from "../../utils/toastify/toasty";
 import { useEffect, useState } from "react";
 
-// interface LessoneType {
-//         _id:string,
-//         lessoneS3UrlKey:string,
-//         lessoneTitle:string,
-//         lessoneOrder:number,
-//         tutorId:string,
-//         courseId:string
 
-//     }
-
-// interface CourseRes  {
-//     _id:string
-//     WorkingTitle:string,
-//     ShortDescription:string,
-//     Description:string,
-//     Category:string,
-//     tutorId:string,
-//     thumbNailImageS3UrlKey:string,
-//     WhatWilllearn1:string,
-//     WhatWilllearn2:string,
-//     WhatWilllearn3:string,
-//     WhatWilllearn4:string,
-//     WhoIsThiscourseFor:string,
-//     prerequesties1:string,
-//     prerequesties2:string,
-//     CoursePrice:number,
-//     drafted:boolean
-// }    
 
 
 const SingleCourseView =   () => { 

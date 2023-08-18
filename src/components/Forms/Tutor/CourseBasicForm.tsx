@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import {
   CourseUpload,
   useCourseBasicValidate,
@@ -11,16 +11,24 @@ import { useAxiosePrivate } from "../../../utils/customHooks/hook";
 import { Create_Course_Api } from "../../../utils/api/endPoints/commen";
 import { UseCommenError } from "../../../utils/toastify/toasty";
 import { useSelector } from "react-redux";
+import {Category} from "../../../utils/api/endPoints/commen";
 
 const CourseBasicForm = () => {
   const { errors, handleSubmit, register } = useCourseBasicValidate();
   const userdata:any = useSelector((store:any)=>{
    return store.user.userData
-  })
-
+  });
+  const [categories,setCategories] = useState([]) as any
   const dispatch = useDispatch()
   const navigate = useNavigate()
   const axiosPrivet = useAxiosePrivate();
+  useEffect(()=>{
+       const getAllCategory =async () =>{
+          const response:any =  await axiosPrivet.get(Category);
+          setCategories(response.data)
+       }
+       getAllCategory()
+  },[])
   const formSubmit = async (Data: CourseUpload) => {
     console.log(Data,'Form dataa');
     const formData = new FormData();
@@ -79,10 +87,14 @@ const CourseBasicForm = () => {
                 {...register("Category")}
                 className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
               >
-                <option>United States</option>
-                <option>Canada</option>
-                <option>France</option>
-                <option>Germany</option>
+                <option >Select one</option>
+                {
+                  categories.map((obj:any)=>{
+                    return <>
+                     <option>{obj.category}</option>
+                    </>
+                  })
+                }
               </select>
             </div>
             <div className="mb-5 ">

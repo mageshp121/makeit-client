@@ -8,9 +8,9 @@ function Navbottom(props:any) {
    
   return (
     <>
-    <div className='' >
+    <div className='pt-16' >
     <div className='bg-gradient-to-r  text-center z-1  shadow-xl  flex gap-4   from-green-300  to-teal-600 via-teal-400 sm:ws md:w-screen h-72 p-5 ' >
-      <div className=' shape-1 animate-off-on py-10 px-20  sm:w-1/3 flex-auto h-60'>
+      <div className='  py-10 px-20  sm:w-1/3 flex-auto h-60'>
       <img src="/page-banner-shape-1.svg" alt="cour" />
       </div>
       <div className='flex  ml-12'>
@@ -27,13 +27,12 @@ function Navbottom(props:any) {
         </div>
       )}
           
-    
       </div>
       
       </div>
       
-      <div className=' shape-1 ml-48 animate-off-on flex flex-col justify-end px-24 py-14   flex-auto h-60' >
-      <img className='w-32'src="/business-3d-stack-of-different-books.png" alt="cour" />
+      <div className='  ml-48  flex flex-col justify-end px-24 py-14    flex-auto h-60' >
+      <img className='w-32   shape-1 animate-off-on'src="/business-3d-stack-of-different-books.png" alt="cour" />
       </div>
     </div>
     </div>

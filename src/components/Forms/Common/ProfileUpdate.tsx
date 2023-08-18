@@ -72,10 +72,7 @@ const ProfileUpdate = () => {
     formData.append("email",Data.email);
     formData.append("userimage",Data.userimage[0]);
     formData.append("profileImage",userdata.profileImage);
-    formData.append("_id",userdata._id);
-    for (const entry of formData.entries()) {
-      console.log(entry);
-    }
+    formData.append("_id",userdata._id)
     try {
       const response = await axiosPrivet.put(udpdateuser,formData,{headers:{'Content-Type': 'multipart/form-data'}});
       console.log(response,'<= ProfileUpdate  axiosPrivet.patch  =>');

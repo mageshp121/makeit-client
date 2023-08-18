@@ -12,7 +12,8 @@ import FormEror from "../../ErrorComponents/FormEror";
 import { ErrorComponent } from "../../ErrorComponents/ErrorComponent";
 import { useState } from "react";
 import { UseSomthingWentWrong } from "../../../utils/toastify/toasty";
-
+import mixpanel from "mixpanel-browser";
+const curreDate = new Date();
 
 const TutorRegister = () => {
   const Navigate = useNavigate();
@@ -27,6 +28,13 @@ const TutorRegister = () => {
       if (response.data.Message) {
         setErrorMessage(response.data.Message[0].error);
       } else {
+       
+        // mix panel
+        mixpanel.track("New tutor is registered",{
+            date: curreDate.toISOString(),
+            name: response.data.userData.firstname,
+            roll:"tutor"
+        })
         dispatch(addUser(response.data.userData));
         dispatch(addtoken(response.data.accesToken));
         localStorage.setItem("Token", response.data.reFreshToken);

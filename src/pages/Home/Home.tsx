@@ -6,13 +6,23 @@ import SectionDownCourse from '../../components/common/SectionDownCourse'
 import SectionDown4 from '../../components/common/SectionDown4'
 import { usersProp } from '../../utils/types/types'
 import { useSelector } from 'react-redux'
+import mixpanel from 'mixpanel-browser'
+import Chat from '../../components/Chat/Chat'
+
 
 function Home() {
   const userdata:usersProp = useSelector((store:any)=>{
     return store.user.userData
    })
+   if(userdata._id){
+      mixpanel.track("User landed home afted authentication");
+   }else{
+      mixpanel.track('Landing page');
+   }
+
   return (
     <>
+    <Chat/>
      <Navbar users={userdata}/>
      <HomeNabBottom/>
      <div className='w-full shadow-2xl flex gap-5 mt-3 h-64 p-5'  >
@@ -44,8 +54,6 @@ function Home() {
         <SectionDown4/>
       </div>
     </div>
-    
-  
     
     </>
    

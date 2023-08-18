@@ -22,7 +22,7 @@ const  CardUpper = () => {
         </div>
       </div>
       <div className="h-0  mt-14  bg-slate-700 ">
-        <img className="" src="/courses-shape (1).png" alt="" />
+        <img className="" src="/courses-shape (1).png" alt=""  />
       </div>
     </div>
   );

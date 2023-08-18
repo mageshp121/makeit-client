@@ -1,13 +1,14 @@
 import client from "../baseUrl/axios.baseUrl";
 import { useAxiosePrivate } from "../../customHooks/hook";
 import {
-  FetchCourseData_With_TutorId,
   FetchLessons_With_Courseid,
   FetchCourse_By_Id,
   Fetch_all_Courses,
   getUserById,
   getUserByemail,
-  getRefersh
+  getRefersh,
+  getAllusers,
+  Category
 } from "../endPoints/commen";
 
 
@@ -76,5 +77,27 @@ export const getRefreshToken = async (token:string) =>{
       } catch (error) {
         return error
       }
+
+}
+
+export const fetchAllUsers = async () =>{
+       try {
+        const data = await client().get(getAllusers);
+        console.log(data,'  <=  fetchAllUsers => ');
+        return data
+       } catch (error) {
+          return error
+       }
+}
+
+
+export const fetchAllCategory =async () =>{
+   try {
+     const data = await client().get(Category);
+     console.log(data);
+      return data
+   } catch (error) {
+      return error
+   }
 
 }

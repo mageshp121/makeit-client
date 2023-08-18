@@ -20,7 +20,7 @@ function Profile() {
     <Navbottom Title={"Profile"} subTitle={'explore your profile'} />
     <div className='flex mt-8  ml-12'>
     <ProfileSection  users={userdata} />
-   <div className='flex-auto overflow-auto bg-black justify-center mt-1 ml-8 mr-12 '>
+   <div className='flex-auto overflow-auto justify-center mt-1 ml-8 mr-12 '>
      <Outlet/>
    </div>
     </div>

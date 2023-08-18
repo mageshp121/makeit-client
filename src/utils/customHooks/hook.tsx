@@ -4,8 +4,8 @@ import {
   Auth,
   signInWithPopup,
 } from "firebase/auth";
-import { useOtpSubmit } from "../toastify/toasty";
-import { Otpfomevalue } from "../types/types";
+import { UseCommen, UseCommenError, useOtpSubmit } from "../toastify/toasty";
+import { Otpfomevalue, usersProp } from "../types/types";
 import { RecaptchaVerifier, UserCredential } from "firebase/auth";
 import { provider } from "../config/firebase";
 import { useSelector } from "react-redux";
@@ -14,7 +14,8 @@ import { addtoken } from "../ReduxStore/slices/tokenSlice";
 import { axiosPrivet } from "../api/baseUrl/axios.baseUrl";
 import { useEffect } from "react";
 import client from "../api/baseUrl/axios.baseUrl";
-import { getRefersh } from "../api/endPoints/commen";
+import { Cart_Api, getRefersh } from "../api/endPoints/commen";
+import { useNavigate } from "react-router-dom";
 
 
 
@@ -131,13 +132,21 @@ export const useAxiosePrivate = () => {
   const refersh = useRefreshToken();
   const accesToken = useSelector((store: any) => store.token.token);
   useEffect(() => {
+    // request interceptor
     const requestIntercept = axiosPrivet.interceptors.request.use(
-      (config) => {
+      (config:any) => {
         console.log(accesToken,'acceeeeeeeeee');
         
         console.log("requsrr inter");
         if (!config.headers["Authorization"]) {
           config.headers["Authorization"] = `Bearer ${accesToken}`;
+        }
+
+
+        if (shouldAttachMultipartHeader(config)) {
+          config.headers["Content-Type"] = "multipart/form-data";
+          // Store a flag in the config to indicate that the multipart header was added
+          config.isMultipartHeaderAdded = true;
         }
         return config;
       },
@@ -145,7 +154,7 @@ export const useAxiosePrivate = () => {
         Promise.reject(error)
       }
     );
-
+    // resposns interceptors
     const responaseIntercept = axiosPrivet.interceptors.response.use(
       (reponse) => reponse,
       async (error) => {
@@ -155,7 +164,10 @@ export const useAxiosePrivate = () => {
           const newAccessToken = await refersh();
           console.log(newAccessToken,'accccccesss tokennnnn');
           prevRequest.headers["Authorization"] = `Bearer ${newAccessToken}`;
+         // Re-send the request with the multipart header if it was added in the request interceptor
+         if (prevRequest.isMultipartHeaderAdded) {
           prevRequest.headers["Content-Type"] = "multipart/form-data";
+        }
           return axiosPrivet(prevRequest);
         }
         return Promise.reject(error);
@@ -171,27 +183,58 @@ export const useAxiosePrivate = () => {
 };
 
 
+// funcation that checks the methodes and urls for ataching multipart form data hearder
+const shouldAttachMultipartHeader = (config:any) => {
+  const isPostMethod = config.method === 'post';
+  const isPatchMethod = config.method === 'patch';
+  const isPutMethod = config.method === 'put';
+  const urlIncludesMultipartEndpoint1 = config.url.includes('/api/course/courses') 
+  const urlIncludesMultipartEndpoint2 = config.url.includes('/api/course/lessones');
+  const urlIncludesMultipartEndpoint3 = config.url.includes('/api/course/updatecourse');
+  const urlIncludesMultipartEndpoint4 = config.url.includes('/api/course/updatelessones');
+  const urlIncludesMultipartEndpoint5 = config.url.includes('/api/users/updateprofile');
+  const shouldAttach =
+    (isPostMethod || isPatchMethod || isPutMethod) &&
+    (urlIncludesMultipartEndpoint1 || urlIncludesMultipartEndpoint2 || urlIncludesMultipartEndpoint3  || urlIncludesMultipartEndpoint4 || urlIncludesMultipartEndpoint5  );
+  return shouldAttach;
+};
 
-// course publish hook
-// export const usePublilsh =()=>{
-//   const couseId = useSelector((store: CourseId) => store.course?.courseData);
-//   const courseid = [...couseId];
-//   const navigate = useNavigate();
-//   const dispatch = useDispatch();
-//   const axiosPrivet = useAxiosePrivate();
-//     const publishCourse = async (id:string) => {
-//     try {
-//       const response = await axiosPrivet.patch(Publish_Cours+id);
-//       if (!response) {
-//         UseSomthingWentWrong();
-//       } else {
-//         dispatch(clearCourse());
-//         dispatch(clearLesson());
-//         navigate("/tutor/profile");
-//       }
-//     } catch (error) {
-//       UseSomthingWentWrong();
-//     }
-//   };
-//   return publishCourse
-// }
+
+
+
+
+
+// custom hook for add to cart
+export const useAddTocart =()=>{
+  const userdata:usersProp = useSelector((store:any)=>{
+    return store.user.userData
+   })
+   const axiosPrivet = useAxiosePrivate()
+   const navigate = useNavigate()
+    const handleAddtocart= async (courseId:string)=>{
+      
+    if(userdata._id){
+      const requestData = {
+        userId: userdata._id,
+        cartProductId: courseId,
+      };
+      try {
+        const response = await axiosPrivet.post(Cart_Api,requestData,{headers:{'Content-Type': 'application/json'}});
+       console.log(response,'<= handleAddtocart =>');
+      if(response.data.created || response.data.updated){
+         return UseCommen("Corse added into cart")
+      }else if(response.data.ProductPresent){
+         UseCommenError("Sorry the Course is already present in the cart");
+         return navigate(`/cart/${userdata._id}`)
+      }else{
+      }
+      } catch (error) {
+        return console.log(error,'errororor');
+      }
+      
+    }else{
+      navigate("/auth/login")
+    }
+  }
+ return handleAddtocart
+}

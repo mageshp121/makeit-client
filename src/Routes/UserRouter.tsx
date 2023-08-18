@@ -16,6 +16,10 @@ import PurchasedCourses from '../components/useProfileRelsted/PurchasedCourses'
 import ProfileUpdate from '../components/Forms/Common/ProfileUpdate'
 import ProfileImageUpdate from '../components/Forms/User/ProfileImageUpdate'
 import { PurchaseHistory } from '../components/useProfileRelsted/PurchaseHistory'
+import CartPage from '../pages/cart/CartPage'
+import Makepayment from '../components/PurchaseRelate/Makepayment'
+import PaymentPage from '../pages/MakePayment/PaymentPage'
+import Lessoneview from '../pages/Lessone/Lessoneview'
 
 
 function UserRouter() {
@@ -27,14 +31,17 @@ function UserRouter() {
         <Route path='otp' element={<OTP/>}/>
         <Route path='*' element={<ErrorComponent data={{path:'/auth',Message:'Sorry the provided url is not valied'}} />}/>
       </Route>
-      <Route path="/" element={<ProtectedRoute path="/" element={<Home/>} />}/>
+      <Route path="/"  element={<ProtectedRoute path="/" element={<Home/>} />}/>
       <Route path="/single" element={<SingleCourse/>}/>
+      <Route path='/cart/:id' element={<CartPage/>} />
+      <Route path='/cart/payment' element={<PaymentPage/>} />
       <Route path='/profile' element={<UserProfile/>}>
       <Route index  element={<PurchasedCourses/>} />
       <Route path='profilebasic'  element={<ProfileUpdate/>} />
       <Route path='profileimage'  element={<ProfileImageUpdate/>} />
       <Route path='purchasehistory'  element={<PurchaseHistory/>} />
       </Route>
+      <Route path="/lessone/:lessoneId" element={<Lessoneview/>}/>
    </Routes>
   )
 }

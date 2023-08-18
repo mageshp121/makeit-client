@@ -46,6 +46,7 @@ function LessoneForm() {
 
   const fromSubmit = async (data: any) => {
     if (control === 0) {
+      setControl(1)
       if (couseId.length > 0) {
         const formData:FormData = new FormData();
         formData.append("lessoneContent", data.lessoneContent[0]);
@@ -67,7 +68,7 @@ function LessoneForm() {
         setErrorMessage(message);
       }
     } else {
-      UseCommen("please wait course is adding ");
+      UseCommenError("please wait course is adding ");
     }
   };
 
